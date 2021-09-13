@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import *
+
+# Для регистрации модели добавить её в models
+models = [Equipment, Profile,HikeAccounting, UserAccounting
+]
+
+for model in models:
+    admin.site.register(model)
