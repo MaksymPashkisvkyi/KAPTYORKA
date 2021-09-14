@@ -30,7 +30,7 @@ TYPE_OF_HIKE = [
     ("Вело","вело"),        
 ]
 
-class HikeAccounting(models.Model):
+class GroupAccounting(models.Model):
     lead_name = models.CharField(max_length=250, default='Смерека')
     type_of_hike = models.CharField(max_length=15, choices=TYPE_OF_HIKE, default="ПВД")
     responsible_person  = models.ForeignKey(Profile, null=True, default=None, related_name="responsible_person", on_delete=models.CASCADE)
