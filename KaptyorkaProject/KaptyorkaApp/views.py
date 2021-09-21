@@ -18,6 +18,13 @@ def base_context(request, **args):
     return context
 
 
+def get_all_contacts():
+    contacts = []
+    for contact in Contact.objects.all():
+        contacts.append((contact.name, ))
+    return contacts
+
+
 class HomePage(View):
     def get(self, request):
         context = base_context(request, title='Home')
@@ -26,25 +33,29 @@ class HomePage(View):
 
 class CreateUser(View):
     def get(self, request):
-        context = base_context(request, title='Новый контакт', header='Добавить нового пользователя')
+        context = base_context(
+            request, title='Новый контакт', header='Добавить нового пользователя')
         return render(request, "add_contact.html", context)
 
 
 class AddEquipment(View):
     def get(self, request):
-        context = base_context(request, title='Добавить снаряжение', header='Добавить снаряжение')
+        context = base_context(
+            request, title='Добавить снаряжение', header='Добавить снаряжение')
         return render(request, "add_equpment.html", context)
 
 
 class AddGroupAccounting(View):
     def get(self, request):
-        context = base_context(request, title='Записать снар на группу', header='Запись снаряжения на группу')
+        context = base_context(
+            request, title='Записать снар на группу', header='Запись снаряжения на группу')
         return render(request, "new_group_accounting.html", context)
 
 
 class AddUserAccounting(View):
     def get(self, request):
-        context = base_context(request, title='Записать снар на человека', header='Запись снаряжения на человека')
-        return render(request, "new_user_accounting.html", context)		
+        context = base_context(
+            request, title='Записать снар на человека', header='Запись снаряжения на человека')
+        return render(request, "new_user_accounting.html", context)
 
 # Create your views here.

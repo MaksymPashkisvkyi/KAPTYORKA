@@ -14,7 +14,7 @@ class Equipment(models.Model):
     description = models.CharField(max_length=1000, default='', null = True)
 
 
-class Profile(models.Model):
+class Contact(models.Model):
     name = models.CharField(max_length=250, default='Смерека')
     is_club_member = models.BooleanField(default=False)
     phone_number = models.CharField(max_length=30, blank=True)
@@ -33,7 +33,7 @@ TYPE_OF_HIKE = [
 class GroupAccounting(models.Model):
     lead_name = models.CharField(max_length=250, default='Смерека')
     type_of_hike = models.CharField(max_length=15, choices=TYPE_OF_HIKE, default="ПВД")
-    responsible_person  = models.ForeignKey(Profile, null=True, default=None, related_name="responsible_person", on_delete=models.CASCADE)
+    responsible_person  = models.ForeignKey(Contact, null=True, default=None, related_name="responsible_person", on_delete=models.CASCADE)
     group_members = models.CharField(max_length=1000, choices=TYPE_OF_HIKE, default="ПВД")
     start_date = models.DateField(default="2021-01-02")
     end_date = models.DateField(default="2021-01-02")
@@ -43,7 +43,7 @@ class GroupAccounting(models.Model):
 
 class UserAccounting(models.Model):
     equipment = models.ManyToManyField(Equipment)
-    user  = models.ForeignKey(Profile, null=True, default=None, related_name="user", on_delete=models.CASCADE)
+    user  = models.ForeignKey(Contact, null=True, default=None, related_name="user", on_delete=models.CASCADE)
     start_date = models.DateField(default="2021-01-02")
     end_date = models.DateField(default="2021-01-02")
     archived = models.BooleanField(default=False)   
