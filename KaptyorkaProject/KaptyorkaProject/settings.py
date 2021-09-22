@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'KaptyorkaApp'
+    'KaptyorkaApp',
+    'django_bootstrap5'
 ]
 
 MIDDLEWARE = [

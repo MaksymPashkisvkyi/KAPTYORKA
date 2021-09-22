@@ -23,7 +23,7 @@ def base_context(request, **args):
 def get_all_contacts():
     contacts = []
     for contact in Contact.objects.all():
-        contacts.append((contact.name, ))
+        contacts.append((contact.id, contact.name, contact.phone_number))
     return contacts
 
 
@@ -62,6 +62,8 @@ class AddEquipment(View):
     def get(self, request):
         context = base_context(
             request, title='Добавить снаряжение', header='Добавить снаряжение')
+        contacts_list = get_all_contacts()
+        context['contacts_list'] = contacts_list
         return render(request, "add_equpment.html", context)
 
 
@@ -69,6 +71,8 @@ class AddGroupAccounting(View):
     def get(self, request):
         context = base_context(
             request, title='Записать снар на группу', header='Запись снаряжения на группу')
+        contacts_list = get_all_contacts()
+        context['contacts_list'] = contacts_list
         return render(request, "new_group_accounting.html", context)
 
 
