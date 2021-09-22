@@ -2,8 +2,6 @@
 {% block content %}
 {% load static %}
 
-<link href="{% static 'libs/modules/bootstrap-select/css/bootstrap-select.min.css'%}" rel="stylesheet">
-
 <div>
   <form method="POST" enctype="multipart/form-data">
     {%csrf_token%}
@@ -29,7 +27,5 @@
 
   </form>
 </div>
-<script src="{% static 'libs/modules/bootstrap-select/js/popper.min.js' %}"></script>
-<script src="{% static 'libs/modules/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
 
 {% endblock %}
