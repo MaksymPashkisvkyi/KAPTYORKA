@@ -1,12 +1,12 @@
 #content {
-    padding-left: 20em;
-    padding-right: 20em;
+    margin-left: 20em;
+    margin-right: 20em;
     background-color: #212529;
     width: 100rem;
 }
 
 body {
-    background-color: #212529;
+    background-color: #1b1f22;
 }
 
 .bg-dark {
