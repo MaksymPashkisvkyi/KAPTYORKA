@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View, TemplateView
+from django import forms
 from .models import *
 
 
@@ -38,6 +39,24 @@ class CreateUser(View):
             request, title='Новый контакт', header='Добавить нового пользователя')
         return render(request, "add_contact.html", context)
 
+    def post(self, request):
+        
+        form = request.POST
+        
+        name_input = form['name_input']
+        number_input = form['number_input']
+        in_club_input = form['in_club_input'] == "on"
+
+        contact = Contact(
+            name = name_input,
+            phone_number = number_input,
+            is_club_member = in_club_input,
+        )
+
+        contact.save()
+        
+        return HttpResponseRedirect("/new_contact")
+
 
 class AddEquipment(View):
     def get(self, request):
@@ -62,5 +81,6 @@ class AddUserAccounting(View):
         context = base_context(
             request, title='Записать снар на человека', header='Запись снаряжения на человека')
         return render(request, "new_user_accounting.html", context)
+
 
 # Create your views here.
