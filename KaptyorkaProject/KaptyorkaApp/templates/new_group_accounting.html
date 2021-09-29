@@ -1,244 +1,155 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
-
-
+<link rel="stylesheet" href="{% static 'libs/modules/tabs/tabs.css' %}" />
+<link rel="stylesheet" href="{% static 'css/form.css' %}" />
 
 <div>
-  <form method="POST" enctype="multipart/form-data">
-    {%csrf_token%}
-    <div class="form-group">
-      <label for="responsiblePersonLabel">Ответственное лицо</label><br>
-      <select class="selectpicker" data-live-search="true" id="responsiblePersonSelector" data-size="5">
-        {% for user in contacts_list %}
-        <option data-tokens="{{user.0}}" value="{{user.0}}">{{user.1}}, {{user.2}}</option>
-        {% endfor %}
-      </select>
-      <br>
-      <small id="responsiblePersonHelp" class="form-text text-muted">Зам. по снару, руководитель или другой контакт,
-        ответственный
-        за взятый снар.</small>
-    </div>
-    <div class="form-group">
-      <label for="leadLabel">Руководитель</label>
-      <input type="text" class="form-control" id="leadInputField" placeholder="Смерека">
-      <small id="leadInputHelp" class="form-text text-muted">Имя руковода группы.</small>
-    </div>
-    <div class="form-group">
-      <label for="exampleFormControlInput2">Тип похода</label>
-      <span>
-        <select name="type" class="form-control">
-          <option value="Пеший">ПВД</option>
-          <option value="Лыжный">Лыжный</option>
-          <option value="Водный">Другой тип</option>
-        </select>
-      </span>
-      <small id="emailHelp" class="form-text text-muted">Имеет значение при расчёте цены.</small>
-    </div>
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
 
-  </form>
+  {%csrf_token%}
+
+
+
+
 </div>
-<link rel="stylesheet" href="{% static 'libs/modules/bootstrap-tabs/css/font.css' %}"/>
-<link rel="stylesheet" href="{% static 'libs/modules/bootstrap-tabs/css/nunito-font.css' %}"/>
-<link rel="stylesheet" href="{% static 'libs/modules/bootstrap-tabs/css/style.css' %}"/>
-
-<div class="wizard-v5-content">
-  <div class="wizard-form">
-    <form class="form-register" id="form-register" action="#" method="post">
-      <div id="form-total">
-        <!-- SECTION 1 -->
-        <h2>
-          <span class="step-icon"><i class="zmdi zmdi-check"></i></span>
-          <span class="step-text">Personal Information</span>
-        </h2>
-        <section>
-          <div class="inner">
-            <div class="form-row">
-              <div class="form-holder">
-                <label for="first_name">First Name</label>
-                <input type="text" placeholder="ex: Laura" class="form-control" id="first_name" name="first_name">
-              </div>
-              <div class="form-holder">
-                <label for="last_name">Last Name</label>
-                <input type="text" placeholder="ex: Vaughn" class="form-control" id="last_name" name="last_name">
-              </div>
-            </div>
-            <div class="form-row">
-              <div id="radio">
-                <label for="gender">Gender:</label>
-                <input type="radio" name="gender" value="male" checked> Male
-                <input type="radio" name="gender" value="female"> Female
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-holder form-holder-2">
-                <label for="address">Address Location</label>
-                <input type="text" placeholder="622 Dixie Path, South Tobinchester, UT 98336" class="form-control"
-                  id="address" name="address">
-                <span><i class="zmdi zmdi-pin"></i></span>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-holder form-holder-3">
-                <label for="phone">Phone Number</label>
-                <input type="text" placeholder="+1 777-888-8888" class="form-control" id="phone" name="phone">
-              </div>
-              <div class="form-holder">
-                <label for="code">Zip Code</label>
-                <input type="text" class="form-control" id="code" name="code">
-              </div>
-            </div>
-            <div class="form-row form-row-date">
-              <div class="form-holder form-holder-2">
-                <label for="date" class="special-label">Date of Birth:</label>
-                <select name="date" id="date" class="form-control">
-                  <option value="15" selected>15</option>
-                  <option value="16">16</option>
-                  <option value="17">17</option>
-                  <option value="18">18</option>
-                  <option value="19">19</option>
-                </select>
-                <select name="month" id="month" class="form-control">
-                  <option value="Jan" selected>Jan</option>
-                  <option value="Feb">Feb</option>
-                  <option value="Mar">Mar</option>
-                  <option value="Apr">Apr</option>
-                  <option value="May">May</option>
-                </select>
-                <select name="year" id="year" class="form-control">
-                  <option value="2018" selected>2018</option>
-                  <option value="2017">2017</option>
-                  <option value="2016">2016</option>
-                  <option value="2015">2015</option>
-                  <option value="2014">2014</option>
-                  <option value="2013">2013</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- SECTION 2 -->
-        <h2>
-          <span class="step-icon"><i class="zmdi zmdi-check"></i></span>
-          <span class="step-text">Bank Information</span>
-        </h2>
-        <section>
-          <div class="inner">
-            <div class="form-row">
-              <div class="form-holder">
-                <label for="bank">Bank Name:</label>
-                <input type="text" placeholder="UsBank" class="form-control input-step-2" id="bank" name="bank">
-                <span><i class="zmdi zmdi-search"></i></span>
-              </div>
-              <div class="form-holder">
-                <label for="branch">Branch Name:</label>
-                <input type="text" placeholder="America" class="form-control input-step-2" id="branch" name="branch">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-holder form-holder-2">
-                <label for="email">Email Address:</label>
-                <input type="email" name="email" class="email input-step-2-1" id="email"
-                  placeholder="ex: example@email.com" pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-holder form-holder-2">
-                <label for="account_name">Account Name:</label>
-                <input type="text" placeholder="Account Name" class="form-control input-step-2-1" id="account_name"
-                  name="account_name">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-holder form-holder-2">
-                <label for="account_number">Account Number:</label>
-                <input type="text" placeholder="4576-6970-3801-2620" class="form-control input-step-2-2"
-                  id="account_number" name="account_number">
-                <span class="card"><i class="zmdi zmdi-card"></i></span>
-              </div>
-            </div>
-            <div class="form-row form-row-date form-row-step-2">
-              <div class="form-holder form-holder-2">
-                <label for="date_2" class="special-label">Expiry Date:</label>
-                <select name="date_2" id="date_2" class="form-control">
-                  <option value="15" selected>15</option>
-                  <option value="16">16</option>
-                  <option value="17">17</option>
-                  <option value="18">18</option>
-                  <option value="19">19</option>
-                </select>
-                <select name="month_2" id="month_2" class="form-control">
-                  <option value="Jan" selected>Jan</option>
-                  <option value="Feb">Feb</option>
-                  <option value="Mar">Mar</option>
-                  <option value="Apr">Apr</option>
-                  <option value="May">May</option>
-                </select>
-                <select name="year_2" id="year_2" class="form-control">
-                  <option value="2018" selected>2018</option>
-                  <option value="2017">2017</option>
-                  <option value="2016">2016</option>
-                  <option value="2015">2015</option>
-                  <option value="2014">2014</option>
-                  <option value="2013">2013</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- SECTION 3 -->
-        <h2>
-          <span class="step-icon"><i class="zmdi zmdi-check"></i></span>
-          <span class="step-text">Confirm Details</span>
-        </h2>
-        <section>
-          <div class="inner">
-            <h3>Comfirm Details</h3>
-            <div class="form-row table-responsive">
-              <table class="table">
-                <tbody>
-                  <tr class="space-row">
-                    <th>Full Name:</th>
-                    <td id="fullname-val"></td>
-                  </tr>
-                  <tr class="space-row">
-                    <th>Email Address:</th>
-                    <td id="email-val"></td>
-                  </tr>
-                  <tr class="space-row">
-                    <th>Phone Number:</th>
-                    <td id="phone-val"></td>
-                  </tr>
-                  <tr class="space-row">
-                    <th>Address Location:</th>
-                    <td id="address-val"></td>
-                  </tr>
-                  <tr class="space-row">
-                    <th>Gender:</th>
-                    <td id="gender-val"></td>
-                  </tr>
-                  <tr class="space-row">
-                    <th>Account Name:</th>
-                    <td id="account-name-val"></td>
-                  </tr>
-                  <tr class="space-row">
-                    <th>Account Number:</th>
-                    <td id="account-number-val"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
+<div class="container">
+  <div class="row">
+    <div class="process">
+      <div class="process-row nav nav-tabs">
+        <div class="process-step">
+          <button type="button" id="btn-menu1" class="btn btn-scrollable active-tab-label" data-toggle="tab"
+            href="#menu1"></button>
+          <label for="btn-menu1">
+            <p><small>Сведения о группе</small></p>
+          </label>
+        </div>
+        <div class="process-step">
+          <button type="button" id="btn-menu2" class="btn btn-scrollable hidden-tab-label" data-toggle="tab"
+            href="#menu2"></button>
+          <label for="btn-menu1">
+            <p><small>Выбор снаряжения</small></p>
+          </label>
+          <p><small></small></p>
+        </div>
+        <div class="process-step">
+          <button type="button" id="btn-menu3" class="btn btn-scrollable hidden-tab-label" data-toggle="tab"
+            href="#menu3"></button>
+          <label for="btn-menu1">
+            <p><small>Подтверждение</small></p>
+          </label>
+        </div>
       </div>
-    </form>
+    </div>
+    <div class="tab-content">
+      <div id="menu1" class="tab-pane fade active in">
+        <div class="form-group">
+          <label for="responsiblePersonLabel">Ответственное лицо</label><br>
+          <select class="selectpicker dark dark-childs" data-live-search="true" id="responsiblePersonSelector"
+            data-size="5">
+            {% for user in contacts_list %}
+            <option data-tokens="{{user.0}}" value="{{user.0}}">{{user.1}}, {{user.2}}</option>
+            {% endfor %}
+          </select>
+          <br>
+          <small id="responsiblePersonHelp" class="form-text text-muted">Зам. по снару, руководитель или другой контакт,
+            ответственный
+            за взятый снар.</small>
+        </div>
+        <div class="form-group">
+          <label for="leadLabel">Руководитель</label>
+          <input type="text" class="form-control dark" id="leadInputField" placeholder="Смерека">
+          <small id="leadInputHelp" class="form-text text-muted">Имя руковода группы.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput2">Тип похода</label><br>
+          <span>
+            <select name="type" class="form-control custom-select dark-control dark">
+              <option value="Пеший">ПВД</option>
+              <option value="Лыжный">Лыжный</option>
+              <option value="Водный">Другой тип</option>
+            </select>
+          </span>
+          <small id="emailHelp" class="form-text text-muted">Имеет значение при расчёте цены.</small>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="leadLabel">Новичков</label>
+          </div>
+          <div class="col">
+            <label for="leadLabel">Студентов</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col input-number">
+            <input type="number" min="0" max="100" step="1" value="0">
+          </div>
+          <div class="col input-number">
+            <input type="number" min="0" max="100" step="1" value="0">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col">
+            <label for="leadLabel">ДЧ</label>
+          </div>
+          <div class="col">
+            <label for="leadLabel">Остальных</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col input-number">
+            <input type="number" min="0" max="100" step="1" value="0">
+          </div>
+          <div class="col input-number">
+            <input type="number" min="0" max="100" step="1" value="0">
+          </div>
+        </div>
+        <!-- <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div> -->
+
+      </div>
+      <div id="menu2" class="tab-pane fade">
+        <!-- __________________________________________________________________________________________________ -->
+
+        <select id="demo2" multiple="multiple">
+          <option value="blueberry" data-section="Горное/Карабины" data-key="0">Карабин жуткий стальной</option>
+          <option value="strawberry" data-section="Горное/Карабины" data-key="1">Карабин новый алюминиевый</option>
+          <option value="peach" data-section="Горное/Системы" data-key="2">Система низ Terra Incognita</option>
+          <option value="milk tea" data-section="Общее/Палатки" selected="" data-key="3">Terra тройка</option>
+          <option value="green apple" data-section="Общее/Палатки" data-key="4">Terra двойка</option>
+          <option value="passion fruit" data-section="Общее" selected="" readonly="" data-key="5">Бесполезная хрень
+          </option>
+        </select>
+
+      </div>
+      <div id="menu3" class="tab-pane fade">
+        <h3>Menu 3</h3>
+        <p>Some content in menu 3.</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <div class="col steps-control-panel">
+    <hr />
+    <button type="button" class="btn btn-info prev-step" disabled="true">Назад<i
+        class="fa fa-chevron-right"></i></button>
+    <button type="button" class="btn btn-info next-step">Далее<i class="fa fa-chevron-right"></i></button>
+    <button type="submit" class="btn btn-info last-step" style="display: none;">Завершить<i
+        class="fa fa-chevron-right"></i></button>
   </div>
 </div>
 
 
+
+<!-- 
+  <button type="submit" class="btn btn-primary">Submit</button> -->
 {% endblock %}

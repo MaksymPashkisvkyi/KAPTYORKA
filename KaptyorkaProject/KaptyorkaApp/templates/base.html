@@ -97,6 +97,7 @@
     }
   </style>
   <link href="{% static 'css/base.css'%}" rel="stylesheet">
+  <link href="{% static 'libs/modules/multiselect/jquery.tree-multiselect.css'%}" rel="stylesheet">
 </head>
 
 <body>
@@ -174,8 +175,24 @@
 <!-- __________________________________________ SCRIPTS __________________________________________ -->
 
 <script src="{% static 'libs/modules/jquery/jquery.js' %}" type="text/javascript"></script>
-<script src="{% static 'libs/modules/bootstrap-tabs/js/jquery.steps.js' %}"></script>
-<script src="{% static 'libs/modules/bootstrap-tabs/js/main.js' %}"></script>
+<script src="{% static 'libs/modules/jquery/jquery-ui.min.js' %}"></script>
+
+<script src="{% static 'libs/modules/multiselect/jquery.tree-multiselect.js' %}"></script>
+<script>$("select#demo2").treeMultiselect({ searchable: true, searchParams: ['section', 'text'] });</script>
+
+
+
+<script src="{% static 'libs/modules/tabs/tabs.js' %}"></script>
+
+
+<script src="{% static 'libs/modules/spinner/bootstrap-input-spinner.js' %}"></script>
 <script src="{% static 'libs/modules/bootstrap-select/js/bootstrap-select.min.js' %}" type="text/javascript"></script>
+<script>
+  $("input[type='number']").inputSpinner()
+</script>
+
+
+
+
 
 </html>

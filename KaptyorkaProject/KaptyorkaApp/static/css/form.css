@@ -1,0 +1,98 @@
+.form-group {
+    line-height: 1.5;
+}
+
+.dark {
+    background-color: #333333;
+    color: white;
+}
+
+.dark-control {
+    appearance: searchfield;
+}
+
+.dark:active {
+    background-color: #333333;
+    color: white;
+}
+
+.dark:focus {
+    background-color: #333333;
+    color: white;
+}
+
+.dark.dark-childs>* {
+    background-color: #333333 !important;
+    color: white !important;
+}
+
+.dropdown-menu>* {
+    background-color: #333333 !important;
+    color: white !important;
+}
+
+.dropdown-menu .text {
+    color: white;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: rgb(165, 165, 165);
+}
+
+.dropdown-menu .dropdown-item:active {
+    background-color: rgb(165, 165, 165);
+}
+
+.dropdown-menu .dropdown-item:focus {
+    background-color: rgb(165, 165, 165);
+}
+
+.bs-searchbox .form-control {
+    background-color: #333333;
+    color: white;
+}
+
+li.active>.dropdown-item.selected {
+    background-color: rgb(152, 190, 202);
+}
+
+.inner.show {
+    min-width: 25rem;
+    overflow-x: hidden;
+}
+
+input[type=number].dark-control::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number].dark-control {
+    max-width: 10rem !important;
+    box-shadow: none;
+    border-radius: 1px;
+    line-height: 1.5;
+}
+
+.inline-form-group {
+    display: inline-flex;
+}
+
+.input-number .form-control {
+    max-width: 7rem !important;
+    background-color: #333333;
+    color: white;
+}
+
+/* .item {
+    background: #333333;
+}
+div.tree-multiselect > div.selected > div.item {
+    background: #646464;
+    } */
+
+div.tree-multiselect>div.selected>div.item {
+    /*! background: #EAEAEA; */
+    border-radius: 2px;
+    padding: 2px 5px;
+    overflow: auto;
+}
