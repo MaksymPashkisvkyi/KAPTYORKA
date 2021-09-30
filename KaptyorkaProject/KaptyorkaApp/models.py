@@ -38,6 +38,7 @@ class GroupAccounting(models.Model):
     end_date = models.DateField(default="2021-01-02")
     equipment = models.ManyToManyField(Equipment)
     archived = models.BooleanField(default=False)   
+    # TODO Add price
 
 
 class UserAccounting(models.Model):

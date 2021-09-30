@@ -91,6 +91,23 @@ class AddGroupAccounting(View):
         context['contacts_list'] = contacts_list
         return render(request, "new_group_accounting.html", context)
 
+    def post(self, request):
+        form = request.POST
+
+        group_accounting = GroupAccounting(
+            lead_name=form['leadName'],
+            type_of_hike=form['typeOfHike'],
+            responsible_person=Contact.objects.get(id = form['responsiblePerson']),
+            group_members=form['others']+form['realMembers']+form['students']+form['newOnes'],
+            start_date=form['startDate'],
+            end_date=form['endDate'],
+            # equipment=form['equipment'],
+            archived=False
+            )
+
+        group_accounting.save()
+        return HttpResponseRedirect("/")
+
 
 class AddUserAccounting(View):
     def get(self, request):

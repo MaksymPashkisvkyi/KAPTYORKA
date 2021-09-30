@@ -698,7 +698,7 @@ Tree.prototype.addCollapsibility = function () {
 Tree.prototype.createSearchBar = function (parentNode) {
   var searchObj = new Search(SEARCH_HIT_ATTR, this.astItems, this.astSections, this.params.searchParams);
 
-  var searchNode = Util.dom.createNode('input', { class: 'search', placeholder: 'Search...' });
+  var searchNode = Util.dom.createNode('input', { class: 'search', placeholder: 'Поиск по названию...' });
   parentNode.appendChild(searchNode);
 
   this.$selectionContainer.on('input', 'input.search', function () {
