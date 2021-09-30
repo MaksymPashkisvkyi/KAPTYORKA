@@ -4,133 +4,188 @@
 <link rel="stylesheet" href="{% static 'libs/modules/tabs/tabs.css' %}" />
 <link rel="stylesheet" href="{% static 'css/form.css' %}" />
 
-<div>
 
-  {%csrf_token%}
-
-
-
-
-</div>
 <div class="container">
-  <div class="row">
-    <div class="process">
-      <div class="process-row nav nav-tabs">
-        <div class="process-step">
-          <button type="button" id="btn-menu1" class="btn btn-scrollable active-tab-label" data-toggle="tab"
-            href="#menu1"></button>
-          <label for="btn-menu1">
-            <p><small>Сведения о группе</small></p>
-          </label>
-        </div>
-        <div class="process-step">
-          <button type="button" id="btn-menu2" class="btn btn-scrollable hidden-tab-label" data-toggle="tab"
-            href="#menu2"></button>
-          <label for="btn-menu1">
-            <p><small>Выбор снаряжения</small></p>
-          </label>
-          <p><small></small></p>
-        </div>
-        <div class="process-step">
-          <button type="button" id="btn-menu3" class="btn btn-scrollable hidden-tab-label" data-toggle="tab"
-            href="#menu3"></button>
-          <label for="btn-menu1">
-            <p><small>Подтверждение</small></p>
-          </label>
+  <form action="" method="POST">
+    {%csrf_token%}
+    <div class="row">
+
+
+
+
+      <!-- _______________________________________ TABS CONTROL PANEL _______________________________________ -->
+
+      <div class="process">
+        <div class="process-row nav nav-tabs">
+          <div class="process-step">
+            <button type="button" id="btn-menu1" class="btn btn-scrollable active-tab-label" data-toggle="tab"
+              href="#menu1"></button>
+            <label for="btn-menu1">
+              <p><small>Сведения о группе</small></p>
+            </label>
+          </div>
+          <div class="process-step">
+            <button type="button" id="btn-menu2" class="btn btn-scrollable hidden-tab-label" data-toggle="tab"
+              href="#menu2"></button>
+            <label for="btn-menu1">
+              <p><small>Выбор снаряжения</small></p>
+            </label>
+            <p><small></small></p>
+          </div>
+          <div class="process-step">
+            <button type="button" id="btn-menu3" class="btn btn-scrollable hidden-tab-label" data-toggle="tab"
+              href="#menu3"></button>
+            <label for="btn-menu1">
+              <p><small>Подтверждение</small></p>
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="tab-content">
-      <div id="menu1" class="tab-pane fade active in">
-        <div class="form-group">
-          <label for="responsiblePersonLabel">Ответственное лицо</label><br>
-          <select class="selectpicker dark dark-childs" data-live-search="true" id="responsiblePersonSelector"
-            data-size="5">
-            {% for user in contacts_list %}
-            <option data-tokens="{{user.0}}" value="{{user.0}}">{{user.1}}, {{user.2}}</option>
+
+
+      <!-- _______________________________________ TABS CONTENT _______________________________________ -->
+      <div class="tab-content">
+
+
+
+
+        <!-- _______________________________________ HIKE PROPERTIES _______________________________________ -->
+
+        <div id="menu1" class="tab-pane fade active in">
+          <div class="form-group">
+            <label for="responsiblePersonLabel">Ответственное лицо</label><br>
+            <select class="selectpicker dark dark-childs" data-live-search="true" id="responsiblePersonSelector"
+              data-size="5">
+              {% for user in contacts_list %}
+              <option data-tokens="{{user.0}}" value="{{user.0}}">{{user.1}}, {{user.2}}</option>
+              {% endfor %}
+            </select>
+            <br>
+            <small id="responsiblePersonHelp" class="form-text text-muted">Зам. по снару, руководитель или другой
+              контакт,
+              ответственный
+              за взятый снар.</small>
+          </div>
+          <div class="form-group">
+            <label for="leadLabel">Руководитель</label>
+            <input type="text" class="form-control dark" id="leadInputField" placeholder="Смерека">
+            <small id="leadInputHelp" class="form-text text-muted">Имя руковода группы.</small>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput2">Тип похода</label><br>
+            <span>
+              <select name="type" class="form-control custom-select dark-control dark">
+                <option value="Пеший">ПВД</option>
+                <option value="Лыжный">Лыжный</option>
+                <option value="Водный">Другой тип</option>
+              </select>
+            </span>
+            <small id="emailHelp" class="form-text text-muted">Имеет значение при расчёте цены.</small>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label for="leadLabel">Новичков</label>
+            </div>
+            <div class="col">
+              <label for="leadLabel">Студентов</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col input-number">
+              <input type="number" min="0" max="100" step="1" value="0">
+            </div>
+            <div class="col input-number">
+              <input type="number" min="0" max="100" step="1" value="0">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col">
+              <label for="leadLabel">ДЧ</label>
+            </div>
+            <div class="col">
+              <label for="leadLabel">Остальных</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col input-number">
+              <input type="number" min="0" max="100" step="1" value="0">
+            </div>
+            <div class="col input-number">
+              <input type="number" min="0" max="100" step="1" value="0">
+            </div>
+          </div>
+          <label for="">Временные рамки</label>
+          <div class="row datepicker-row">
+            <div class="col">
+              <input type="date" name="start" class="form-control dark-control dark datepicker" required=""
+                id="start_day" onchange="setMinEndDate()">
+            </div>
+            <div class="col">
+              <input type="date" name="end" class="form-control dark-control dark datepicker" required="" id="end_day"
+                onchange="setMinEndDate()">
+            </div>
+            <small id="emailHelp" class="form-text text-muted">День взятия снара и планируемая дата его
+              возврата.</small>
+            <script>
+              function byId(id) {
+                return document.getElementById(id);
+              }
+              function setMinEndDate() {
+                byId('end_day').min = byId('start_day').value;
+              }
+              Date.prototype.toDateInputValue = (function () {
+                var local = new Date(this);
+                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                return local.toJSON().slice(0, 10);
+              });
+              function addDays(date, days) {
+                var result = new Date(date);
+                result.setDate(result.getDate() + days);
+                return result;
+              }
+              document.getElementById('start_day').value = addDays(new Date(), 0).toDateInputValue();
+              document.getElementById('start_day').min = addDays(Date(), -1).toDateInputValue();
+              document.getElementById('end_day').value = addDays(Date(), 10).toDateInputValue();
+            </script>
+
+          </div>
+        </div>
+
+
+
+        <!-- _______________________________________ EQUIPMENT SELECT _______________________________________ -->
+
+        <div id="menu2" class="tab-pane fade">
+          <select id="demo2" multiple="multiple">
+            {% for equipment in eq_list %}
+            <option value="eq_{{equipment.0}}" data-section="{{equipment.2}}" data-description="{{equipment.3}}">
+              {{equipment.1}}</option>
             {% endfor %}
           </select>
-          <br>
-          <small id="responsiblePersonHelp" class="form-text text-muted">Зам. по снару, руководитель или другой контакт,
-            ответственный
-            за взятый снар.</small>
-        </div>
-        <div class="form-group">
-          <label for="leadLabel">Руководитель</label>
-          <input type="text" class="form-control dark" id="leadInputField" placeholder="Смерека">
-          <small id="leadInputHelp" class="form-text text-muted">Имя руковода группы.</small>
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlInput2">Тип похода</label><br>
-          <span>
-            <select name="type" class="form-control custom-select dark-control dark">
-              <option value="Пеший">ПВД</option>
-              <option value="Лыжный">Лыжный</option>
-              <option value="Водный">Другой тип</option>
-            </select>
-          </span>
-          <small id="emailHelp" class="form-text text-muted">Имеет значение при расчёте цены.</small>
+          <script>
+            var prices = {
+              //{% for equipment in eq_list %}
+              "eq_{{equipment.0}}": ["{{equipment.4}}", "{{equipment.6}}"],
+              //{% endfor %}
+            };
+          </script>
+          <div class="col">
+            <h4>Итоговая цена:</h4>
+          </div>
         </div>
 
-        <div class="row">
-          <div class="col">
-            <label for="leadLabel">Новичков</label>
-          </div>
-          <div class="col">
-            <label for="leadLabel">Студентов</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col input-number">
-            <input type="number" min="0" max="100" step="1" value="0">
-          </div>
-          <div class="col input-number">
-            <input type="number" min="0" max="100" step="1" value="0">
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col">
-            <label for="leadLabel">ДЧ</label>
-          </div>
-          <div class="col">
-            <label for="leadLabel">Остальных</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col input-number">
-            <input type="number" min="0" max="100" step="1" value="0">
-          </div>
-          <div class="col input-number">
-            <input type="number" min="0" max="100" step="1" value="0">
-          </div>
-        </div>
-        <!-- <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div> -->
 
-      </div>
-      <div id="menu2" class="tab-pane fade">
-        <!-- __________________________________________________________________________________________________ -->
 
-        <select id="demo2" multiple="multiple">
-          <option value="blueberry" data-section="Горное/Карабины" data-key="0">Карабин жуткий стальной</option>
-          <option value="strawberry" data-section="Горное/Карабины" data-key="1">Карабин новый алюминиевый</option>
-          <option value="peach" data-section="Горное/Системы" data-key="2">Система низ Terra Incognita</option>
-          <option value="milk tea" data-section="Общее/Палатки" selected="" data-key="3">Terra тройка</option>
-          <option value="green apple" data-section="Общее/Палатки" data-key="4">Terra двойка</option>
-          <option value="passion fruit" data-section="Общее" selected="" readonly="" data-key="5">Бесполезная хрень
-          </option>
-        </select>
+        <!-- _______________________________________ CONFIRMATION _______________________________________ -->
 
-      </div>
-      <div id="menu3" class="tab-pane fade">
-        <h3>Menu 3</h3>
-        <p>Some content in menu 3.</p>
+        <div id="menu3" class="tab-pane fade">
+          <h3>Menu 3</h3>
+          <p>Some content in menu 3.</p>
+        </div>
       </div>
     </div>
-  </div>
 
 
 
@@ -138,18 +193,20 @@
 
 
 
-  <div class="col steps-control-panel">
-    <hr />
-    <button type="button" class="btn btn-info prev-step" disabled="true">Назад<i
-        class="fa fa-chevron-right"></i></button>
-    <button type="button" class="btn btn-info next-step">Далее<i class="fa fa-chevron-right"></i></button>
-    <button type="submit" class="btn btn-info last-step" style="display: none;">Завершить<i
-        class="fa fa-chevron-right"></i></button>
-  </div>
+    <div class="col steps-control-panel">
+      <hr />
+      <button type="button" class="btn btn-info prev-step" disabled="true">Назад<i
+          class="fa fa-chevron-right"></i></button>
+      <button type="button" class="btn btn-info next-step">Далее<i class="fa fa-chevron-right"></i></button>
+      <button type="submit" class="btn btn-info last-step" style="display: none;">Завершить<i
+          class="fa fa-chevron-right"></i></button>
+    </div>
+  </form>
 </div>
 
 
+<script src="{% static 'libs/modules/jquery/jquery-ui.min.js' %}"></script>
+<script src="{% static 'libs/modules/multiselect/jquery.tree-multiselect.js' %}"></script>
+<script src="{% static 'js/equipment-accounting-tree.js' %}"></script>
 
-<!-- 
-  <button type="submit" class="btn btn-primary">Submit</button> -->
 {% endblock %}

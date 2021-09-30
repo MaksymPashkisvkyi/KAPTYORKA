@@ -74,7 +74,7 @@ div.tree-multiselect {
   div.tree-multiselect span.description:hover {
     cursor: help; }
   div.tree-multiselect div.temp-description-popup {
-    background: #EAEAEA;
+    background: #222222;
     border: 2px solid #676767;
     border-radius: 3px;
     padding: 5px; }

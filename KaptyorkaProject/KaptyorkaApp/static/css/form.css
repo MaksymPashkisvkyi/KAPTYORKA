@@ -96,3 +96,40 @@ div.tree-multiselect>div.selected>div.item {
     padding: 2px 5px;
     overflow: auto;
 }
+
+p.right {
+    position: relative;
+    float: inline-end;
+}
+
+.price-col {
+    float: inline-end;
+    padding-right: 15px;
+    min-width: 60px;
+    text-align: right;
+}
+
+.amount-selector {
+    float: inline-end;
+    max-width: 80px;
+    max-height: 26px;
+    border: none;
+}
+.amount-selector:active, .amount-selector:hover {
+    box-shadow: none;
+    border: #333333;
+    border-bottom: none;
+    
+}
+.amount-limit {
+    float: inline-end;
+    margin-bottom: 0px;
+}
+
+.datepicker {
+    max-width: 18rem;
+}
+
+.datepicker-row {
+    max-width: 40rem;
+}

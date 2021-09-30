@@ -1,31 +1,65 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'libs/modules/tabs/tabs.css' %}" />
+<link rel="stylesheet" href="{% static 'css/form.css' %}" />
 
 <div>
   <form method="POST" enctype="multipart/form-data">
     {%csrf_token%}
     <div class="form-group">
-      <label for="exampleInputEmail1">Ответственное лицо</label><br>
-      <select class="selectpicker" data-live-search="true" id="select_ptc" data-size="5">
-        {% for user in contacts_list %}
-        <option data-tokens="{{user.0}}" value="{{user.0}}">{{user.1}}, {{user.2}}</option>
-        {% endfor %}
-      </select>
-      <small id="emailHelp" class="form-text text-muted">Зам. по снару, руководитель или другой контакт, ответственный
-        за взятый снар.</small>
+      <label for="leadLabel">Название</label>
+      <input type="text" class="form-control dark" id="leadInputField" placeholder="Terra Incognita Canyon 3 Alu">
+      <small id="leadInputHelp" class="form-text text-muted">Название, производитель и модель.</small>
     </div>
+    <label for="categorySelect">Категория</label>
+    <select id="categorySelect" multiple="multiple">
+      <option value="ff" data-section="top/bottom">Four</option>
+      <option value="four" data-section="top/inner">Four</option>
+      <option value="wow" data-section="top/inner/this/is/really/nested">Wow</option>
+      <option value="wow" data-section="top/inner/this/is/really/damned">Wow</option>
+    </select>
     <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+      <label for="leadLabel">Особенности</label>
+      <div class="form-outline">
+        <textarea class="form-control dark" id="textAreaExample" rows="4" placeholder="Адамантиевые дуги, одну из которых кто-то умудрился сломать, и ещё погнуть пару."></textarea>
+      </div>
+      <small id="leadInputHelp" class="form-text text-muted">Отличительные свойства этого(-их) объекта(-ов).</small>
     </div>
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    <div class="row">
+      <div class="col input-number">
+        <label for="leadLabel">Количество</label>
+      </div>
+      <div class="input-number">
+        <input type="number" min="0" max="100" step="1" value="1">
+      </div>
+      <small id="leadInputHelp" class="form-text text-muted">1 если объект уникален.</small>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 
   </form>
 </div>
 
+
+
+
+
+
+
+
+
+
+<!-- _____________________________________________ SCRIPTS _____________________________________________ -->
+
+<script src="{% static 'libs/modules/jquery/jquery-ui.min.js' %}"></script>
+<script src="{% static 'libs/modules/multiselect/jquery.tree-multiselect.js' %}"></script>
+<script>
+  $("select#categorySelect").treeMultiselect({maxSelections: 3, enableSelectAll: true, unselectAllText: true});
+</script>
+<!-- 
+  let trees = $("select").treeMultiselect();
+let firstTree = trees[0];
+  $("select#id").append("<option value='newValue' data-section='New Section' selected='selected' data-description='New value'>New Value</option>");
+firstTree.reload();
+ -->
 {% endblock %}

@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 
 class Equipment(models.Model):
     name = models.CharField(max_length=250, default='карабин')
-    type = models.CharField(max_length=50, default='горное')
-    subtype = models.CharField(max_length=50, default='горное')
+    path = models.CharField(max_length=50, default='горное')
     unique = models.BooleanField(default=True)
     number = models.IntegerField(default=1, blank=True)    
     price_per_day = models.IntegerField(default=0, blank=True)

@@ -27,6 +27,20 @@ def get_all_contacts():
     return contacts
 
 
+def get_all_free_equipment():
+    eq_list = []
+    for equipment in Equipment.objects.all():
+        eq_list.append((equipment.id,
+                        equipment.name,
+                        equipment.path,
+                        equipment.description,
+                        equipment.price_per_day,
+                        equipment.price_for_members,
+                        equipment.number))
+        # TODO Append filters to filter only free equipment
+    return eq_list
+
+
 class HomePage(View):
     def get(self, request):
         context = base_context(request, title='Home')
@@ -40,21 +54,21 @@ class CreateUser(View):
         return render(request, "add_contact.html", context)
 
     def post(self, request):
-        
+
         form = request.POST
-        
+
         name_input = form['name_input']
         number_input = form['number_input']
         in_club_input = form['in_club_input'] == "on"
 
         contact = Contact(
-            name = name_input,
-            phone_number = number_input,
-            is_club_member = in_club_input,
+            name=name_input,
+            phone_number=number_input,
+            is_club_member=in_club_input,
         )
 
         contact.save()
-        
+
         return HttpResponseRedirect("/new_contact")
 
 
@@ -72,6 +86,8 @@ class AddGroupAccounting(View):
         context = base_context(
             request, title='Записать снар на группу', header='Запись снаряжения на группу')
         contacts_list = get_all_contacts()
+        eq_list = get_all_free_equipment()
+        context['eq_list'] = eq_list
         context['contacts_list'] = contacts_list
         return render(request, "new_group_accounting.html", context)
 
