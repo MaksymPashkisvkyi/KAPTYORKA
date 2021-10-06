@@ -17,7 +17,7 @@ function countPrice(line) {
 
 function treeOnChange(allSelectedItems, addedItems, removedItems) {
 
-    $(".selected").children().toArray().forEach(addPrice);
+    $(".tree-multiselect .selected").children().toArray().forEach(addPrice);
     updatePrice()
 }
 function addPrice(line) {
@@ -36,16 +36,32 @@ function addPrice(line) {
     }
 }
 
-function updatePrice(){
+function updatePrice() {
     totalPrice = 0;
-    $(".selected").children().toArray().forEach(countTotalPrice);
+    $(".tree-multiselect .selected").children().toArray().forEach(countTotalPrice);
+    selectedEquipmentToJSON();
     $("#priceField")[0].innerText = "Итоговая цена: " + totalPrice + "₴";
+
+
+    $("#priceHiddenField")[0].value = totalPrice;
+    function countTotalPrice(line) {
+        eqId = line.getAttribute("data-value");
+        var price = prices[eqId][0];
+        
+        totalPrice += Number(price) * Number($("#amount_" + eqId)[0].value);
+    }
 }
 
-function countTotalPrice(line) {
-    eqId = line.getAttribute("data-value");
-    var price = prices[eqId][0];
-    totalPrice += Number(price) * Number($("#amount_" + eqId)[0].value);
 
 
+function selectedEquipmentToJSON() {
+    var equipmentDict = {};
+    $(".tree-multiselect .selected").children().toArray().forEach(addItemToJSON);
+    function addItemToJSON(line) {
+        eqId = line.getAttribute("data-value");
+        var price = prices[eqId][0];
+        backendEqId = eqId.substr(3, eqId.length-1);
+        equipmentDict[backendEqId] = Number($("#amount_" + eqId)[0].value);
+    }
+    $("#equipmentJSONHiddenField")[0].value = JSON.stringify(equipmentDict);
 }

@@ -55,7 +55,7 @@
           <div class="form-group">
             <label for="responsiblePersonLabel">Ответственное лицо</label><br>
             <select class="selectpicker dark dark-childs" data-live-search="true" id="responsiblePersonSelector" title="Выберите контакт"
-              data-size="5">
+              data-size="5" required>
               {% for user in contacts_list %}
               <option data-tokens="{{user.0}}" value="{{user.0}}" data-subtext="{{user.2}}">{{user.1}}</option>
               {% endfor %}
@@ -70,7 +70,7 @@
           <div class="form-group">
             <label for="leadLabel">Руководитель</label>
             <input type="text" name="leadName" class="form-control dark" id="leadInputField" placeholder="Смерека">
-            <small id="leadInputHelp" class="form-text text-muted">Имя руковода группы.</small>
+            <small id="leadInputHelp" class="form-text text-muted" required>Имя руковода группы.</small>
           </div>
           <div class="form-group">
             <label for="exampleFormControlInput2">Тип похода</label><br>
@@ -193,7 +193,13 @@
 
 
 
+    <!-- _______________________________________ HIDDEN FORM FIELDS _______________________________________ -->
 
+    <input type="hidden" name="price" id="priceHiddenField">
+    <input type="hidden" name="equipmentJSON" id="equipmentJSONHiddenField">
+
+
+    <!-- _______________________________________ NAVIGATION PANEL _______________________________________ -->    
 
     <div class="col steps-control-panel">
       <hr />
