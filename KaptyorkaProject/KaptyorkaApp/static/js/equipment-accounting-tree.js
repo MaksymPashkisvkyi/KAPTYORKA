@@ -41,6 +41,7 @@ function updatePrice() {
     $(".tree-multiselect .selected").children().toArray().forEach(countTotalPrice);
     selectedEquipmentToJSON();
     $("#priceField")[0].innerText = "Итоговая цена: " + totalPrice + "₴";
+    $("#priceCDataField")[0].innerText = "Итоговая амортизация: " + totalPrice + "₴";
 
 
     $("#priceHiddenField")[0].value = totalPrice;

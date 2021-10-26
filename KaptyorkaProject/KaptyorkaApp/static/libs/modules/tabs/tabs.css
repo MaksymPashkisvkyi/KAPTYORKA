@@ -90,3 +90,16 @@ button[disabled]{
   color: #666666;
   box-shadow:none !important;
 }
+
+#selectedEquipmentCDataField {
+    background-color: #363a3e;
+}
+
+.CDataCol {
+    max-width: 120px;
+}
+
+.CDataMainCol {
+    max-width: 500px;
+    overflow: hidden;
+}
