@@ -133,3 +133,8 @@ p.right {
 .datepicker-row {
     max-width: 40rem;
 }
+
+.required-alert {
+    color: orange;
+
+}

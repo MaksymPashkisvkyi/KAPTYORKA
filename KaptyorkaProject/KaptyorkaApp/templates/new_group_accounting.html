@@ -54,8 +54,8 @@
         <div id="menu1" class="tab-pane fade active in">
           <div class="form-group">
             <label for="responsiblePersonLabel">Ответственное лицо</label><br>
-            <select class="selectpicker dark dark-childs" data-live-search="true" id="responsiblePersonSelector" title="Выберите контакт"
-              data-size="5" required>
+            <select class="selectpicker dark dark-childs" data-live-search="true" id="responsiblePersonSelector"
+              title="Выберите контакт" data-size="5" required>
               {% for user in contacts_list %}
               <option data-tokens="{{user.0}}" value="{{user.0}}" data-subtext="{{user.2}}">{{user.1}}</option>
               {% endfor %}
@@ -75,13 +75,14 @@
           <div class="form-group">
             <label for="exampleFormControlInput2">Тип похода</label><br>
             <span>
-              <select name="typeOfHike" class="form-control custom-select dark-control dark">
-                <option value="Пеший">ПВД</option>
+              <select name="typeOfHike" id="typeOfHikeSelector" class="form-control custom-select dark-control dark">
+                <option value="ПВД">ПВД</option>
                 <option value="Лыжный">Лыжный</option>
-                <option value="Водный">Другой тип</option>
+                <option value="Другой">Другой тип</option>
               </select>
             </span>
-            <small id="emailHelp" class="form-text text-muted">"Есть только три типа походов: ПВД, Лыжка и все остальные"</small>
+            <small id="emailHelp" class="form-text text-muted">"Есть только три типа походов: ПВД, Лыжка и все
+              остальные"</small>
           </div>
 
           <div class="row">
@@ -111,10 +112,10 @@
           </div>
           <div class="row">
             <div class="col input-number">
-              <input type="number" name="realMembers" id="realMembers"  min="0" max="100" step="1" value="0">
+              <input type="number" name="realMembers" id="realMembers" min="0" max="100" step="1" value="0">
             </div>
             <div class="col input-number">
-              <input type="number" name="others" id="others"  min="0" max="100" step="1" value="0">
+              <input type="number" name="others" id="others" min="0" max="100" step="1" value="0">
             </div>
           </div>
           <small id="emailHelp" class="form-text text-muted">Имеет значение при расчёте цены.</small><br>
@@ -125,8 +126,8 @@
                 id="start_day" onchange="setMinEndDate()">
             </div>
             <div class="col">
-              <input type="date" name="endDate" class="form-control dark-control dark datepicker" required="" id="end_day"
-                onchange="setMinEndDate()">
+              <input type="date" name="endDate" class="form-control dark-control dark datepicker" required=""
+                id="end_day" onchange="setMinEndDate()">
             </div>
             <small id="emailHelp" class="form-text text-muted">День взятия снара и планируемая дата его
               возврата.</small>
@@ -184,7 +185,50 @@
 
         <div id="menu3" class="tab-pane fade">
           <h3>Проверьте правильность информации</h3>
-          <p>Some content in menu 3.</p>
+          <div class="row">
+            <div class="col">
+              <div>Ответственный за снар: </div>
+            </div>
+            <div class="col">
+              <div class="confirmation-data" id="responsiblePersonCDataField"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div>Руководитель группы: </div>
+            </div>
+            <div class="col">
+              <div class="confirmation-data" id="leadCDataField"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div>Тип похода: </div>
+            </div>
+            <div class="col">
+              <div class="confirmation-data" id="typeOfHikeCDataField"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div>Дата взятия: </div>
+            </div>
+            <div class="col">
+              <div class="confirmation-data" id="datesOfRentCDataField"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div>Руководитель группы: </div>
+            <div class="confirmation-data" id="gg"></div>
+          </div>
+          <div class="row">
+            <div>Тип похода: </div>
+            <div class="confirmation-data" id="gg"></div>
+          </div>
+          <div class="row">
+            <div>Участников: </div>
+            <div class="confirmation-data" id="leadCDataField"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -199,7 +243,7 @@
     <input type="hidden" name="equipmentJSON" id="equipmentJSONHiddenField">
 
 
-    <!-- _______________________________________ NAVIGATION PANEL _______________________________________ -->    
+    <!-- _______________________________________ NAVIGATION PANEL _______________________________________ -->
 
     <div class="col steps-control-panel">
       <hr />

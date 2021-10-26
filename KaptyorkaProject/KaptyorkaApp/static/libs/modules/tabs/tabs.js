@@ -8,6 +8,7 @@ $(function () {
         $('.tab-pane').removeClass('in').removeClass('active').removeClass('show');
         $('#' + menuId).addClass('in').addClass('active').addClass('show');
         $.fn.switchControlTabsButtons();
+        updateData();
     });
 
     $('.next-step, .prev-step').on('click', function (e) {
@@ -37,8 +38,10 @@ $(function () {
                 $('#' + activeTabId).removeClass('in').removeClass('active').removeClass('show');
                 $('#' + prevTabId).addClass('in').addClass('active').addClass('show');
             }
+
         }
         $.fn.switchControlTabsButtons();
+        updateData();
     });
 
     $.fn.switchControlTabsButtons = function () {
@@ -63,4 +66,33 @@ $(function () {
 
 });
 
+function updateData() {
+    // RESPONSIBLE PERSON
+    $("#responsiblePersonCDataField")[0].innerText =  $(".filter-option-inner-inner")[0].innerText;
+    if ($(".filter-option-inner-inner")[0].innerText == "Выберите контакт"){
+        $("#responsiblePersonCDataField")[0].innerText = "Не выбрано";
+        $("#responsiblePersonCDataField").addClass("required-alert");
+    }
+    else {
+        $("#responsiblePersonCDataField").removeClass("required-alert");
+    }
+    // LEAD
+    $("#leadCDataField")[0].innerText =  byId("leadInputField").value;
+    if ($("#leadCDataField")[0].innerText == ""){
+        $("#leadCDataField")[0].innerText = "Не выбрано";
+        $("#leadCDataField").addClass("required-alert");
+    }
+    else {
+        $("#leadCDataField").removeClass("required-alert");
+    }
+    // TYPE OF HIKE
+    $("#typeOfHikeCDataField")[0].innerText =  byId("typeOfHikeSelector").value;
+    // TIME 
+    $("#datesOfRentCDataField")[0].innerText = beauty_date_interval(byId("start_day").value, byId("end_day").value);
+    console.log(3);
+}
+
+function validateData(textIfValid, textIfNotValid) {
+
+}
 

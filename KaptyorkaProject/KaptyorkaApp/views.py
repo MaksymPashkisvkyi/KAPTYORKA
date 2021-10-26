@@ -70,9 +70,11 @@ def get_all_free_equipment():
 class HomePage(View):
     def get(self, request):
         context = base_context(request, title='Home')
-        accountings_list = list(GroupAccounting.objects.order_by("-id")[:30])
-        accountings = map(lambda acc: (acc, beauty_date_interval(acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting = acc)), accountings_list)
-        context["accountings"] = accountings
+        group_accountings_list = list(GroupAccounting.objects.order_by("-id")[:30])
+        group_accountings = list(map(lambda acc: (acc, beauty_date_interval(acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting = acc)), group_accountings_list))
+        user_accountings_list = list(UserAccounting.objects.order_by("-id")[:30])
+        user_accountings = list(map(lambda acc: (acc, beauty_date_interval(acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting = acc)), user_accountings_list))
+        context["accountings"] = user_accountings+group_accountings
         return render(request, "home.html", context)
 
 
@@ -155,7 +157,35 @@ class AddUserAccounting(View):
     def get(self, request):
         context = base_context(
             request, title='Записать снар на человека', header='Запись снаряжения на человека')
+        contacts_list = get_all_contacts()
+        eq_list = get_all_free_equipment()
+        context['eq_list'] = eq_list
+        context['contacts_list'] = contacts_list
         return render(request, "new_user_accounting.html", context)
+    
+    def post(self, request):
+        form = request.POST
+        user_accounting = UserAccounting(
+            user=Contact.objects.get(
+                id=form['responsiblePerson']),
+            start_date=form['startDate'],
+            end_date=form['endDate'],
+            archived=False
+        )
+        user_accounting.save()
+        equipment_json = loads(form['equipmentJSON'])
+
+        for eqId in equipment_json:
+            rentedEq = RentedEquipment(
+                equipment=Equipment.objects.get(id=eqId),
+                amount=equipment_json[eqId],
+                type_of_accounting="GroupAccounting",
+                group_accounting=user_accounting
+            )
+            rentedEq.save()
+
+        user_accounting.save()
+        return HttpResponseRedirect("/")
 
 
 # Create your views here.
