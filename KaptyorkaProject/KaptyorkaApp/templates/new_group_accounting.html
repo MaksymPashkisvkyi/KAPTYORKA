@@ -75,7 +75,7 @@
           <div class="form-group">
             <label for="exampleFormControlInput2">Тип похода</label><br>
             <span>
-              <select name="typeOfHike" id="typeOfHikeSelector" class="form-control custom-select dark-control dark">
+              <select name="typeOfHike" id="typeOfHikeSelector" class="form-control custom-select dark-control dark" required>
                 <option value="ПВД">ПВД</option>
                 <option value="Лыжный">Лыжный</option>
                 <option value="Другой">Другой тип</option>
@@ -252,6 +252,8 @@
 
     <input type="hidden" name="price" id="priceHiddenField">
     <input type="hidden" name="equipmentJSON" id="equipmentJSONHiddenField">
+    <input type="text" style="display: none;" name="isAnyEquipmentSelected" id="isAnyEquipmentSelected" required="true">
+
 
 
     <!-- _______________________________________ NAVIGATION PANEL _______________________________________ -->

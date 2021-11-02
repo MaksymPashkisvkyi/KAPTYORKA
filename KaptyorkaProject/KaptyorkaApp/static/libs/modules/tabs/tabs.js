@@ -126,9 +126,11 @@ function updateData() {
     })
     if ($("#selectedEquipmentCDataField")[0].childNodes.length < 2) {
         $("#noEquipmentExceptionCDataField").show();
+        byId("isAnyEquipmentSelected").value = "";
     }
     else {
         $("#noEquipmentExceptionCDataField").hide();
+        byId("isAnyEquipmentSelected").value = "true";
     }
 }
 
