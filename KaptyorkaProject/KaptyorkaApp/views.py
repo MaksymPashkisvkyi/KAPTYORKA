@@ -28,6 +28,7 @@ def get_all_contacts():
         contacts.append((contact.id, contact.name, contact.phone_number))
     return contacts
 
+
 def beauty_date_interval(date1: datetime, date2: datetime, show_year=False, show_if_this_year=False):
     months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
               'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря']
@@ -45,10 +46,10 @@ def beauty_date_interval(date1: datetime, date2: datetime, show_year=False, show
 
     if show_year:
         if show_if_this_year:
-            result+= ', '+str(date1.year)
+            result += ', '+str(date1.year)
         else:
             if date1.year != datetime.now().year:
-                result+= ', '+str(date1.year)
+                result += ', '+str(date1.year)
 
     return result
 
@@ -70,10 +71,14 @@ def get_all_free_equipment():
 class HomePage(View):
     def get(self, request):
         context = base_context(request, title='Home')
-        group_accountings_list = list(GroupAccounting.objects.order_by("-id")[:30])
-        group_accountings = list(map(lambda acc: (acc, beauty_date_interval(acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting = acc)), group_accountings_list))
-        user_accountings_list = list(UserAccounting.objects.order_by("-id")[:30])
-        user_accountings = list(map(lambda acc: (acc, beauty_date_interval(acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting = acc)), user_accountings_list))
+        group_accountings_list = list(
+            GroupAccounting.objects.order_by("-id")[:30])
+        group_accountings = list(map(lambda acc: (acc, beauty_date_interval(
+            acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting=acc)), group_accountings_list))
+        user_accountings_list = list(
+            UserAccounting.objects.order_by("-id")[:30])
+        user_accountings = list(map(lambda acc: (acc, beauty_date_interval(
+            acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting=acc)), user_accountings_list))
         context["accountings"] = user_accountings+group_accountings
         return render(request, "home.html", context)
 
@@ -125,19 +130,30 @@ class AddGroupAccounting(View):
     def post(self, request):
         form = request.POST
 
+
+        group_composition = GroupComposition(
+            realMembers=form['realMembers'],
+            students=form['students'],
+            newOnes=form['newOnes'],
+            others=form['others']
+        )
+        group_composition.save()
+
+
         group_accounting = GroupAccounting(
             lead_name=form['leadName'],
             type_of_hike=form['typeOfHike'],
             responsible_person=Contact.objects.get(
                 id=form['responsiblePerson']),
-            group_members=form['others']+form['realMembers'] +
-            form['students']+form['newOnes'],
+            group_composition = group_composition,
             start_date=form['startDate'],
             end_date=form['endDate'],
-            # equipment=form['equipment'],
+            price=form['price'],
             archived=False
         )
         group_accounting.save()
+
+
         equipment_json = loads(form['equipmentJSON'])
 
         for eqId in equipment_json:
@@ -162,7 +178,7 @@ class AddUserAccounting(View):
         context['eq_list'] = eq_list
         context['contacts_list'] = contacts_list
         return render(request, "new_user_accounting.html", context)
-    
+
     def post(self, request):
         form = request.POST
         user_accounting = UserAccounting(
