@@ -2,11 +2,9 @@
 <html>
 
 <head>
-  {% load django_bootstrap5 %}
   {% load static %} {%csrf_token%}
-  {% bootstrap_css %}
-  {% bootstrap_javascript %}
-  {% bootstrap_messages %}
+  <link crossorigin="anonymous" href="{% static 'libs/modules/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+  <script crossorigin="anonymous" src="{% static 'libs/modules/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
   <!-- TITLE AND PROPERTIES -->
   {% if title != 'none' %}
   <title>KT: {{ title }}</title>
