@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
-import graphviz
-from pycallgraph import PyCallGraph
-from pycallgraph.output import GraphvizOutput
 import os
 import sys
-
 
 def main():
     """Run administrative tasks."""
@@ -21,8 +17,7 @@ def main():
     execute_from_command_line(sys.argv)
 
 
+
+
 if __name__ == '__main__':
-    graphviz = GraphvizOutput()
-    graphviz.output_file = 'basic.png'
-    with PyCallGraph(output=graphviz):
-        main()
+    main()

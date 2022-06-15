@@ -1,22 +1,23 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import View, TemplateView
-from django import forms
+from datetime import datetime
 from json import loads
-from .models import *
-from datetime import date, timedelta, datetime
+
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.views.generic import View
+
+from .models import Contact
+from .models import Equipment
+from .models import GroupAccounting
+from .models import GroupComposition
+from .models import RentedEquipment
+from .models import UserAccounting
 
 
 def base_context(request, **args):
-    context = {}
-    user = request.user
+    context = {'title': 'none', 'header': 'none', 'error': 0}
+    # user = request.user
 
-    context['title'] = 'none'
-    context['header'] = 'none'
-    context['error'] = 0
-
-    if args != None:
+    if args is not None:
         for arg in args:
             context[arg] = args[arg]
     return context
@@ -36,20 +37,20 @@ def beauty_date_interval(date1: datetime, date2: datetime, show_year=False, show
     result += str(date1.day) + ' '
 
     if (date1.day, date1.month, date1.year) == (date2.day, date2.month, date2.year):
-        result += months[date1.month-1]
+        result += months[date1.month - 1]
     else:
         if date1.month == date2.month:
-            result += '- '+str(date2.day) + ' ' + months[date1.month-1]
+            result += '- ' + str(date2.day) + ' ' + months[date1.month - 1]
         else:
-            result += months[date1.month-1]+' - ' + \
-                str(date2.day) + ' '+months[date2.month-1]
+            result += months[date1.month - 1] + ' - ' + \
+                      str(date2.day) + ' ' + months[date2.month - 1]
 
     if show_year:
         if show_if_this_year:
-            result += ', '+str(date1.year)
+            result += ', ' + str(date1.year)
         else:
             if date1.year != datetime.now().year:
-                result += ', '+str(date1.year)
+                result += ', ' + str(date1.year)
 
     return result
 
@@ -71,15 +72,16 @@ def get_all_free_equipment():
 class HomePage(View):
     def get(self, request):
         context = base_context(request, title='Home')
-        group_accountings_list = list(
+        group_accounting_list = list(
             GroupAccounting.objects.order_by("-id")[:30])
-        group_accountings = list(map(lambda acc: (acc, beauty_date_interval(
-            acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting=acc)), group_accountings_list))
-        user_accountings_list = list(
+        group_accounting = list(map(lambda acc: (acc, beauty_date_interval(
+            acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting=acc)),
+                                    group_accounting_list))
+        user_accounting_list = list(
             UserAccounting.objects.order_by("-id")[:30])
-        user_accountings = list(map(lambda acc: (acc, beauty_date_interval(
-            acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting=acc)), user_accountings_list))
-        context["accountings"] = user_accountings+group_accountings
+        user_accounting = list(map(lambda acc: (acc, beauty_date_interval(
+            acc.start_date, acc.end_date), RentedEquipment.objects.filter(group_accounting=acc)), user_accounting_list))
+        context["accountings"] = user_accounting + group_accounting
         return render(request, "home.html", context)
 
 
@@ -90,7 +92,6 @@ class CreateUser(View):
         return render(request, "add_contact.html", context)
 
     def post(self, request):
-
         form = request.POST
 
         name_input = form['name_input']
@@ -130,7 +131,6 @@ class AddGroupAccounting(View):
     def post(self, request):
         form = request.POST
 
-
         group_composition = GroupComposition(
             realMembers=form['realMembers'],
             students=form['students'],
@@ -139,20 +139,18 @@ class AddGroupAccounting(View):
         )
         group_composition.save()
 
-
         group_accounting = GroupAccounting(
             lead_name=form['leadName'],
             type_of_hike=form['typeOfHike'],
             responsible_person=Contact.objects.get(
                 id=form['responsiblePerson']),
-            group_composition = group_composition,
+            group_composition=group_composition,
             start_date=form['startDate'],
             end_date=form['endDate'],
             price=form['price'],
             archived=False
         )
         group_accounting.save()
-
 
         equipment_json = loads(form['equipmentJSON'])
 
@@ -202,6 +200,5 @@ class AddUserAccounting(View):
 
         user_accounting.save()
         return HttpResponseRedirect("/")
-
 
 # Create your views here.

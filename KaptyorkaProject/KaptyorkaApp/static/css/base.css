@@ -1,6 +1,4 @@
 #content {
-    /* margin-left: 20em;
-    margin-right: 20em; */
     background-color: #212529;
     width: 100rem;
 }
@@ -24,8 +22,3 @@ select {
 input[type="text"] {
     max-width: 30rem;
 }
-
-/* 
-.form-control {
-    max-width: 40em;
-} */

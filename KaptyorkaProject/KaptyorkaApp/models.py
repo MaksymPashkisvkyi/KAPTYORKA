@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 
 class Equipment(models.Model):
@@ -30,7 +29,7 @@ TYPE_OF_HIKE = [
 ]
 
 TYPE_OF_ACCOUNTING = [
-	("UesrAccounting", "GroupAccounting"),
+	("UserAccounting", "GroupAccounting"),
 	("GroupAccounting", "GroupAccounting")
 ]
 
