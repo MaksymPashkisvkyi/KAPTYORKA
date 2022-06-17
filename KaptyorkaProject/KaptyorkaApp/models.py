@@ -1,74 +1,100 @@
 from django.db import models
 
-
-class Equipment(models.Model):
-	name = models.CharField(max_length=250, default='карабин')
-	path = models.CharField(max_length=50, default='горное')
-	unique = models.BooleanField(default=True)
-	number = models.IntegerField(default=1, blank=True)
-	price_per_day = models.IntegerField(default=0, blank=True)
-	price = models.IntegerField(default=0, blank=True)
-	price_for_members = models.IntegerField(default=0, blank=True)
-	description = models.CharField(max_length=1000, default='', null=True)
-
-
-class Contact(models.Model):
-	name = models.CharField(max_length=250, default='Смерека')
-	is_club_member = models.BooleanField(default=False)
-	phone_number = models.CharField(max_length=30, blank=True)
-
-
 TYPE_OF_HIKE = [
-	("ПВД", "noncategoried"),
-	("Лыжный", "лыжный"),
-	("Горный", "горный"),
-	("Водный", "водный"),
-	("Пеший", "пеший"),
-	("Спелео", "спелео"),
-	("Вело", "вело"),
+    ("ПВД", "noncategoried"),
+    ("Лыжный", "лыжный"),
+    ("Горный", "горный"),
+    ("Водный", "водный"),
+    ("Пеший", "пеший"),
+    ("Спелео", "спелео"),
+    ("Вело", "вело"),
 ]
 
 TYPE_OF_ACCOUNTING = [
-	("UserAccounting", "GroupAccounting"),
-	("GroupAccounting", "GroupAccounting")
+    ("UserAccounting", "GroupAccounting"),
+    ("GroupAccounting", "GroupAccounting")
 ]
 
 
+class Equipment(models.Model):
+    name = models.CharField(max_length=250, default='карабин', verbose_name='Название снаряжения')
+    path = models.CharField(max_length=50, default='горное', verbose_name='Вид снаряжения')
+    unique = models.BooleanField(default=True, verbose_name='Уникальность')
+    number = models.IntegerField(default=1, blank=True, verbose_name='Количество')
+    price = models.IntegerField(default=0, blank=True, verbose_name='Стоимость')
+    price_per_day = models.IntegerField(default=0, blank=True, verbose_name='Стоимость посуточная')
+    price_for_members = models.IntegerField(default=0, blank=True,
+                                            verbose_name='Стоимость посуточная для участников клуба')
+    description = models.CharField(max_length=1000, default='', null=True, verbose_name='Описание')
+
+    class Meta:
+        verbose_name = 'Снаряжение'
+        verbose_name_plural = 'Снаряжение'
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=250, verbose_name='Имя')
+    is_club_member = models.BooleanField(default=False, verbose_name='Член клуба')
+    phone_number = models.CharField(max_length=30, blank=True, verbose_name='Номер телефона')
+
+    class Meta:
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
+
+
 class GroupComposition(models.Model):
-	realMembers = models.IntegerField(default=0)
-	students = models.IntegerField(default=0)
-	newOnes = models.IntegerField(default=0)
-	others = models.IntegerField(default=0)
+    realMembers = models.IntegerField(default=0, verbose_name='Действительные члены')
+    students = models.IntegerField(default=0, verbose_name='Студенты')
+    newOnes = models.IntegerField(default=0, verbose_name='Новички')
+    others = models.IntegerField(default=0, verbose_name='Остальные')
+
+    class Meta:
+        verbose_name = 'Члены клуба'
+        verbose_name_plural = 'Члены клуба'
 
 
 class GroupAccounting(models.Model):
-	lead_name = models.CharField(max_length=250, default='Смерека')
-	type_of_hike = models.CharField(
-		max_length=15, choices=TYPE_OF_HIKE, default="ПВД")
-	responsible_person = models.ForeignKey(
-		Contact, null=True, default=None, related_name="responsible_person", on_delete=models.CASCADE)
-	group_composition = models.ForeignKey(GroupComposition, null=True, default=None, related_name="group", on_delete=models.CASCADE)
-	start_date = models.DateField(default="2021-01-02")
-	end_date = models.DateField(default="2021-01-02")
-	equipment = models.ManyToManyField(Equipment)
-	price = models.IntegerField(default=0, null=False)
-	archived = models.BooleanField(default=False)
+    lead_name = models.CharField(max_length=250, default='Смерека', verbose_name='Руководитель группы')
+    type_of_hike = models.CharField(max_length=15, choices=TYPE_OF_HIKE, default="ПВД", verbose_name='Вид похода')
+    responsible_person = models.ForeignKey(Contact, null=True, default=None,
+                                           related_name="responsible_person", on_delete=models.CASCADE, verbose_name='Ответственный человек')
+    group_composition = models.ForeignKey(GroupComposition, null=True, default=None, related_name="group",
+                                          on_delete=models.CASCADE, verbose_name='Group composition (изменить)')
+    start_date = models.DateField(default="2021-01-02", verbose_name='Дата выдачи снаряжения')
+    end_date = models.DateField(default="2021-01-02", verbose_name='Дата возврата снаряжения')
+    equipment = models.ManyToManyField(Equipment, verbose_name='Снаряжение')
+    price = models.IntegerField(default=0, null=False, verbose_name='Стоимость аренды')
+    archived = models.BooleanField(default=False, verbose_name='Archived (изменить)')
+
+    class Meta:
+        verbose_name = 'Учёт снаряжения на группы'
+        verbose_name_plural = 'Учёт снаряжения на группы'
 
 
 class UserAccounting(models.Model):
-	equipment = models.ManyToManyField(Equipment)
-	user = models.ForeignKey(
-		Contact, null=True, default=None, related_name="user", on_delete=models.CASCADE)
-	start_date = models.DateField(default="2021-01-02")
-	end_date = models.DateField(default="2021-01-02")
-	archived = models.BooleanField(default=False)
+    user = models.ForeignKey(
+        Contact, null=True, default=None, related_name="user", on_delete=models.CASCADE, verbose_name='Имя')
+    start_date = models.DateField(default="2021-01-02", verbose_name='Дата выдачи снаряжения')
+    end_date = models.DateField(default="2021-01-02", verbose_name='Дата возврата снаряжения')
+    equipment = models.ManyToManyField(Equipment, verbose_name='Снаряжение')
+    archived = models.BooleanField(default=False, verbose_name='Archived (изменить)')
+
+    class Meta:
+        verbose_name = 'Учёт снаряжения на человека'
+        verbose_name_plural = 'Учёт снаряжения на человека'
 
 
 class RentedEquipment(models.Model):
-	equipment = models.ForeignKey(Equipment, null=True, default=None, related_name="equipment", on_delete=models.CASCADE)
-	amount = models.IntegerField(default=1, blank=True)
-	type_of_accounting = models.CharField(max_length=15, choices=TYPE_OF_ACCOUNTING, default="GroupAccounting")
-	user_accounting = models.ForeignKey(
-		UserAccounting, null=True, default=None, on_delete=models.CASCADE)
-	group_accounting = models.ForeignKey(
-		GroupAccounting, null=True, default=None, on_delete=models.CASCADE)        
+    equipment = models.ForeignKey(Equipment, null=True, default=None, related_name="equipment",
+                                  on_delete=models.CASCADE, verbose_name='Снаряжение')
+    amount = models.IntegerField(default=1, blank=True, verbose_name='Количество')
+    type_of_accounting = models.CharField(max_length=15, choices=TYPE_OF_ACCOUNTING, default="GroupAccounting",
+                                          verbose_name='Групповое или индивидуальное')
+    user_accounting = models.ForeignKey(
+        UserAccounting, null=True, default=None, on_delete=models.CASCADE, verbose_name='Запись на человека')
+    group_accounting = models.ForeignKey(
+        GroupAccounting, null=True, default=None, on_delete=models.CASCADE, verbose_name='Запись на группу')
+
+    class Meta:
+        verbose_name = 'Арендуемое снаряжение'
+        verbose_name_plural = 'Арендуемое снаряжение'
