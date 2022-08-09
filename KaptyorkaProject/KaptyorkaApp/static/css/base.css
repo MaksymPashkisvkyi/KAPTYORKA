@@ -29,3 +29,9 @@ input[type="text"] {
 .form-control {
     max-width: 40em;
 } */
+@media screen and (max-width: 481px) {
+    #content {
+        float: left;
+    }
+
+}
