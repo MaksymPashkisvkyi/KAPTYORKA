@@ -3,41 +3,34 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'libs/modules/tabs/tabs.css' %}" />
 <link rel="stylesheet" href="{% static 'css/form.css' %}" />
+<link rel="stylesheet" href="{% static 'css/add_equipment.css' %}" />
 
 <div>
-  <form method="POST" enctype="multipart/form-data">
+  
     {%csrf_token%}
-    <div class="form-group">
-      <label for="leadLabel">Название</label>
-      <input type="text" class="form-control dark" id="leadInputField" placeholder="Terra Incognita Canyon 3 Alu">
-      <small id="leadInputHelp" class="form-text text-muted">Название, производитель и модель.</small>
-    </div>
-    <label for="categorySelect">Категория</label>
-    <select id="categorySelect" multiple="multiple">
-      <option value="ff" data-section="top/bottom">Four</option>
-      <option value="four" data-section="top/inner">Four</option>
-      <option value="wow" data-section="top/inner/this/is/really/nested">Wow</option>
-      <option value="wow" data-section="top/inner/this/is/really/damned">Wow</option>
-    </select>
-    <div class="form-group">
-      <label for="leadLabel">Особенности</label>
-      <div class="form-outline">
-        <textarea class="form-control dark" id="textAreaExample" rows="4" placeholder="Адамантиевые дуги, одну из которых кто-то умудрился сломать, и ещё погнуть пару."></textarea>
-      </div>
-      <small id="leadInputHelp" class="form-text text-muted">Отличительные свойства этого(-их) объекта(-ов).</small>
-    </div>
-    <div class="row">
-      <div class="col input-number">
-        <label for="leadLabel">Количество</label>
-      </div>
-      <div class="input-number">
-        <input type="number" min="0" max="100" step="1" value="1">
-      </div>
-      <small id="leadInputHelp" class="form-text text-muted">1 если объект уникален.</small>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
 
-  </form>
+    <div id="menu2">
+      <select id="demo2" multiple="multiple">
+        // {% for equipment in eq_list %}
+        <option readonly value="eq_{{equipment.0}}" data-section="{{equipment.2}}" data-description="{{equipment.3}}">
+          {{equipment.1}}</option>
+        // {% endfor %}
+      </select>
+      <script>
+        var prices = {
+          //{% for equipment in eq_list %}
+          "eq_{{equipment.0}}": ["{{equipment.4}}", "{{equipment.6}}"],
+          //{% endfor %}
+        };
+      </script>
+      <div class="col">
+        <h4 id="priceField">Итоговая цена: 0₴</h4>
+      </div>
+    </div>
+
+    
+
+
 </div>
 
 
@@ -53,6 +46,7 @@
 
 <script src="{% static 'libs/modules/jquery/jquery-ui.min.js' %}"></script>
 <script src="{% static 'libs/modules/multiselect/jquery.tree-multiselect.js' %}"></script>
+<script src="{% static 'js/add_equipment.js' %}"></script>
 <script>
   $("select#categorySelect").treeMultiselect({maxSelections: 3, enableSelectAll: true, unselectAllText: true});
 </script>

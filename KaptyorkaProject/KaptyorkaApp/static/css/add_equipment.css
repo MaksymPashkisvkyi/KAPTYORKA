@@ -1,0 +1,32 @@
+.addCat {
+	background-color: #4f5555;
+}
+
+.p-tab {
+	margin-right: 15px;
+	margin-left: 15px;
+	margin-bottom: 2px;
+	display: inline-block;
+	text-align: center;
+}
+
+.item.addCat a {
+	text-decoration: underline;
+	color: #aeaeae;
+}
+
+label.disabled {
+	color: white !important;
+}
+
+input.option {
+	display: none !important;
+}
+
+.btn.btn-outline-warning {
+	margin-right: 15px;
+}
+
+#newItemPrice {
+	display: inline-block !important;
+}

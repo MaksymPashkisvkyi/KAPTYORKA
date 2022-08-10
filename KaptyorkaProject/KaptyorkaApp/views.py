@@ -113,6 +113,8 @@ class AddEquipment(View):
         context = base_context(
             request, title='Добавить снаряжение', header='Добавить снаряжение')
         contacts_list = get_all_contacts()
+        eq_list = get_all_free_equipment()
+        context['eq_list'] = eq_list
         context['contacts_list'] = contacts_list
         return render(request, "add_equpment.html", context)
 
