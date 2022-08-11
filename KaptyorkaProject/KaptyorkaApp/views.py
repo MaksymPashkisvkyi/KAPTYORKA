@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -206,4 +207,37 @@ class AddUserAccounting(View):
         return HttpResponseRedirect("/")
 
 
-# Create your views here.
+class AddNewEquipment(View):
+    def post(self, request):
+        req = request
+        form = request.POST
+
+        result = {}
+
+        if form["requestType"] == "add":
+            new_equipment = Equipment()
+            new_equipment.name = form['obj[name]']
+            new_equipment.path = form['obj[path]']
+            new_equipment.description = form['obj[desc]']
+            new_equipment.number = form['obj[amount]']
+            new_equipment.unique = True if form['obj[amount]'] == '1' else False
+            new_equipment.price = float(form['obj[price]'])//1
+            new_equipment.price_per_day = float(form['obj[price]'])//10
+            new_equipment.price_for_members = float(form['obj[price]'])//20
+        
+
+        new_equipment.save()
+
+        result["newId"] = new_equipment.id
+        result["result"] = "success"
+        # if len(User.objects.filter(username=form['username'])) > 0:
+        #     result['exist'] = 'True'
+
+        # else:
+        #     result['exist'] = 'False'
+        return HttpResponse(
+            json.dumps(result),
+            content_type="application/json"
+        )
+
+

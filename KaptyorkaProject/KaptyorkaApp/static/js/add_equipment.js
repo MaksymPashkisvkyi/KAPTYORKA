@@ -2,7 +2,7 @@ let trees = $("select#demo2").treeMultiselect({ searchable: true, searchParams: 
 let tree = trees[0];
 var totalPrice = 0;
 var newItemsNumber = 0;
-
+var newFoldersNumber = 0;
 $(function () {
 	addCatButton();
 	updatePrices();
@@ -170,10 +170,76 @@ function addNewEquipment() {
 	$("select#demo2").append("<option readonly value='"+id+"' data-section='"+newEquipment.path+"' selected='selected' data-description='"+newEquipment.desc+"'>"+newEquipment.name+"</option>");
 	
 	prices[id] = [newEquipment.price, newEquipment.amount];
+	send_new_equipment('add', 'equipment', newEquipment)
 	reloadTree();
 }
 
+function addNewCat() {
+	id = "new_eq_"+newFoldersNumber;
+	newItemsNumber++;
 
+	eq_name = document.getElementById("newItemName").value;
+	eq_path = document.getElementById("newItemPath").value;
+	let newEquipment = new Equipment(eq_name, eq_path);
+	newEquipment.desc = document.getElementById("newItemDesc").value;
+	newEquipment.amount = document.getElementById("newItemNumber").value;
+	newEquipment.price = document.getElementById("newItemPrice").value;
+	console.log(newEquipment);
+	$("select#demo2").append("<option readonly value='"+id+"' data-section='"+newEquipment.path+"' selected='selected' data-description='"+newEquipment.desc+"'>"+newEquipment.name+"</option>");
+	
+	prices[id] = [newEquipment.price, newEquipment.amount];
+	send_new_equipment('add', 'equipment', newEquipment)
+	reloadTree();
+}
+
+function send_new_equipment(requestType, objType, obj) {
+	$.ajax({
+		url: "/add_equipment/",
+		type: 'POST',
+		data: {
+			'requestType': requestType,
+			'objType': objType,
+			'obj': obj
+		},
+		//DO NOT EDIT!
+		beforeSend: function (xhr, settings) {
+			function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+					var cookies = document.cookie.split(';');
+					for (var i = 0; i < cookies.length; i++) {
+						var cookie = jQuery.trim(cookies[i]);
+						// Does this cookie string begin with the name we want?
+						if (cookie.substring(0, name.length + 1) == (name + '=')) {
+							cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+							break;
+						}
+					}
+				}
+				return cookieValue;
+			}
+			if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				// Only send the token to relative URLs i.e. locally.
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+			}
+		},
+		//EDITABLE CODE
+		success: function a(json) {
+			// alert(json);
+			// alert(json.exist);
+			if (json.result === "success") {
+				// byId(id_code).parentNode.removeChild(byId(id_code));
+				// count_notifications();
+				alert("Ну, чё. Намана");
+			} else {
+				alert("Изменения не сохранены");
+				alert("Ошибка сегментации диска. Компьютер будет перезагружен.");
+				// byId(id_code).parentNode.removeChild(byId(id_code));
+				// count_notifications();
+			}
+		}
+	});
+}
 // function selectedEquipmentToJSON() {
 //     var equipmentDict = {};
 //     $(".tree-multiselect .selected").children().toArray().forEach(addItemToJSON);
