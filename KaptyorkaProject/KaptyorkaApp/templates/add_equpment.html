@@ -4,9 +4,35 @@
 <link rel="stylesheet" href="{% static 'libs/modules/tabs/tabs.css' %}" />
 <link rel="stylesheet" href="{% static 'css/form.css' %}" />
 <link rel="stylesheet" href="{% static 'css/add_equipment.css' %}" />
+<script>
+  function addCatButton() {
+	$(".tree-multiselect div.section").toArray().forEach(addButtonsToEl);
 
+	function addButtonsToEl(element) {
+		obj_path = "";
+		el_parent = element;
+		while (el_parent.nodeName != "BODY") {
+			if (el_parent.className.search("section") != -1) {
+				elParentCat = $(el_parent).children('.title')[0].innerText;
+				console.log(elParentCat);
+				if (obj_path == "") {
+					obj_path = elParentCat;
+				}
+				else {
+					obj_path = elParentCat + '/' + obj_path;
+				}
+
+			}
+			el_parent = el_parent.parentElement;
+		}
+
+		$(element).append(`<div class='item addCat'><a type='button' onclick="createNewFolderMenu('` + obj_path + `')"><img class="folder-icon" src="{% static 'icons/new_folder.svg' %}"></a><p class='p-tab'>/</p><a type='button' onclick="createNewItemMenu('` + obj_path + `')"><img src="{% static 'icons/add_equipment.svg' %}"></a></div>`);
+		// console.log($(element).children('.item').data('value'));
+	}
+}
+</script>
 <div>
-  
+
     {%csrf_token%}
 
     <div id="menu2">
@@ -15,9 +41,15 @@
         <option readonly value="eq_{{equipment.0}}" data-section="{{equipment.2}}" data-description="{{equipment.3}}">
           {{equipment.1}}</option>
         // {% endfor %}
+        <option readonly value="eq_34235" data-section="Водное" data-description="Folder">Folder</option>
+        <option readonly value="eq_34236" data-section="Вело" data-description="Folder">Folder</option>
+        <option readonly value="eq_34237" data-section="Другое" data-description="Folder">Folder</option>
       </select>
       <script>
         var prices = {
+          "eq_34235": [0,0],
+          "eq_34236": [0,0],
+          "eq_34237": [0,0],
           //{% for equipment in eq_list %}
           "eq_{{equipment.0}}": ["{{equipment.4}}", "{{equipment.6}}"],
           //{% endfor %}

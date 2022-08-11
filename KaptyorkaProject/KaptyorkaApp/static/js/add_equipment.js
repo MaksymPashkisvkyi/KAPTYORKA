@@ -1,4 +1,4 @@
-let trees = $("select#demo2").treeMultiselect({ searchable: true, searchParams: ['section', 'text'], onChange: treeOnChange });
+let trees = $("select#demo2").treeMultiselect({ searchable: true, searchParams: ['section', 'text'], onChange: treeOnChange, freeze: true, startCollapsed: true });
 let tree = trees[0];
 var totalPrice = 0;
 var newItemsNumber = 0;
@@ -6,6 +6,7 @@ var newFoldersNumber = 0;
 $(function () {
 	addCatButton();
 	updatePrices();
+	$("[data-description='Folder']").hide();
 });
 
 
@@ -13,45 +14,12 @@ function reloadTree() {
 	tree.reload();
 	addCatButton();
 	updatePrices();
-
+	$("div").find(`[data-description='Folder']`).hide();
 }
 
 
-function addCatButton() {
-	$(".tree-multiselect div.section").toArray().forEach(addButtonsToEl);
 
-	function addButtonsToEl(element) {
-		obj_path = "";
-		el_parent = element;
-		while (el_parent.nodeName != "BODY") {
-			if (el_parent.className == "section") {
-				elParentCat = $(el_parent).children('.title')[0].innerText;
-				console.log(elParentCat);
-				if (obj_path == "") {
-					obj_path = elParentCat;
-				}
-				else {
-					obj_path = elParentCat + '/' + obj_path;
-				}
 
-			}
-			el_parent = el_parent.parentElement;
-		}
-
-		$(element).append("<div class='item addCat' ><a type='button' onclick=\"addNewCat('" + obj_path + "')\">+ Добавить категорию</a><p class='p-tab'>/</p><a type='button' onclick=\"addNewBtn('" + obj_path + "')\">+ Добавить снар</a></div>");
-		console.log($(element).children('.item').data('value'));
-	}
-}
-
-function addNewCat(obj) {
-	console.log(obj)
-}
-
-function addNewBtn(path) {
-	console.log(path)
-	
-	createNewItemMenu(path)
-}
 
 function updatePrices() {
 	$(".item").toArray().forEach(countPrice);
@@ -145,6 +113,23 @@ function createNewItemMenu(path) {
 
 }
 
+function createNewFolderMenu(path) {
+	// reloadTree();
+	
+	let selectedOpt = $(".tree-multiselect").children()[1];
+	$(selectedOpt).empty()
+	$(selectedOpt).append(`<input type="hidden" id="newFolderPath" value=`+path+`></input>`);
+	$(selectedOpt).append("<h4>Добавить новую категорию " + path + "</h4>");
+	$(selectedOpt).append(`<label for="leadLabel">Название</label>`);
+	$(selectedOpt).append(`<input type="text" class="form-control dark" id="newFolderName" placeholder="Карематы">`);
+	$(selectedOpt).append(`<small id="leadInputHelp" class="form-text text-muted">Нахрен я делаю тут эти подсказки</small><br>`);
+
+
+	$(selectedOpt).append(`<button class="btn btn-outline-warning" onclick="reloadTree()">Нне</button>`);
+	$(selectedOpt).append(`<button class="btn btn-outline-primary" onclick="addNewFolder()">Ндэ</button>`);
+
+}
+
 class Equipment {
 	constructor(name = "", path = "") {
 		this.name = name;
@@ -155,6 +140,7 @@ class Equipment {
 
 	}
 }
+
 
 function addNewEquipment() {
 	id = "new_eq_"+newItemsNumber;
@@ -174,23 +160,25 @@ function addNewEquipment() {
 	reloadTree();
 }
 
-function addNewCat() {
-	id = "new_eq_"+newFoldersNumber;
-	newItemsNumber++;
 
-	eq_name = document.getElementById("newItemName").value;
-	eq_path = document.getElementById("newItemPath").value;
-	let newEquipment = new Equipment(eq_name, eq_path);
-	newEquipment.desc = document.getElementById("newItemDesc").value;
-	newEquipment.amount = document.getElementById("newItemNumber").value;
-	newEquipment.price = document.getElementById("newItemPrice").value;
-	console.log(newEquipment);
-	$("select#demo2").append("<option readonly value='"+id+"' data-section='"+newEquipment.path+"' selected='selected' data-description='"+newEquipment.desc+"'>"+newEquipment.name+"</option>");
+function addNewFolder() {
+	id = "new_fd_"+newFoldersNumber;
+	newFoldersNumber++;
+
+	eq_name = document.getElementById("newFolderName").value;
+	eq_path = document.getElementById("newFolderPath").value;
+	let newFolder = new Equipment(eq_name, eq_path);
+	newFolder.desc = "Folder";
+	newFolder.amount = 0;
+	newFolder.price = 0;
+	console.log(newFolder);
+	$("select#demo2").append("<option readonly style='display:none' value='"+id+"' data-section='"+newFolder.path+'/'+newFolder.name+"' selected='selected' data-description='"+newFolder.desc+"'>"+newFolder.name+"</option>");
 	
-	prices[id] = [newEquipment.price, newEquipment.amount];
-	send_new_equipment('add', 'equipment', newEquipment)
+	prices[id] = [0, 0];
+	// send_new_equipment('add', 'equipment', newEquipment)
 	reloadTree();
 }
+
 
 function send_new_equipment(requestType, objType, obj) {
 	$.ajax({
@@ -240,14 +228,3 @@ function send_new_equipment(requestType, objType, obj) {
 		}
 	});
 }
-// function selectedEquipmentToJSON() {
-//     var equipmentDict = {};
-//     $(".tree-multiselect .selected").children().toArray().forEach(addItemToJSON);
-//     function addItemToJSON(line) {
-//         eqId = line.getAttribute("data-value");
-//         var price = prices[eqId][0];
-//         backendEqId = eqId.substr(3, eqId.length-1);
-//         equipmentDict[backendEqId] = Number($("#amount_" + eqId)[0].value);
-//     }
-//     $("#equipmentJSONHiddenField")[0].value = JSON.stringify(equipmentDict);
-// }
