@@ -44,11 +44,22 @@ input.option {
 
 }
 
-.item img {
+.add-item-btn {
 	width: 20px;
 }
 
 .folder-icon {
 	filter: invert(100%);
 	width: 17px;
+}
+
+.delete-icon {
+	filter: invert(60%);
+	width: 17px;
+	/* margin-bottom: 5px; */
+	vertical-align: sub;
+}
+
+.temp-description-popup {
+	z-index: 9;
 }

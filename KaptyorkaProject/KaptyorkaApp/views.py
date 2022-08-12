@@ -213,6 +213,7 @@ class AddNewEquipment(View):
         form = request.POST
 
         result = {}
+        result["result"] = "failture"
 
         if form["requestType"] == "add":
             new_equipment = Equipment()
@@ -224,17 +225,18 @@ class AddNewEquipment(View):
             new_equipment.price = float(form['obj[price]'])//1
             new_equipment.price_per_day = float(form['obj[price]'])//10
             new_equipment.price_for_members = float(form['obj[price]'])//20
-        
-
-        new_equipment.save()
-
-        result["newId"] = new_equipment.id
-        result["result"] = "success"
-        # if len(User.objects.filter(username=form['username'])) > 0:
-        #     result['exist'] = 'True'
-
-        # else:
-        #     result['exist'] = 'False'
+            new_equipment.save()
+            result["result"] = "success"
+            result["newId"] = new_equipment.id
+            
+        elif form["requestType"] == "remove":
+            try:
+                equipment_id = int(form['obj[id]'])
+                Equipment.objects.filter(id=equipment_id).delete()
+                result["result"] = "success"
+            except:
+                pass
+            
         return HttpResponse(
             json.dumps(result),
             content_type="application/json"

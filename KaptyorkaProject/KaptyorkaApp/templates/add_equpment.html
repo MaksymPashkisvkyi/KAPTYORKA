@@ -8,28 +8,41 @@
   function addCatButton() {
 	$(".tree-multiselect div.section").toArray().forEach(addButtonsToEl);
 
-	function addButtonsToEl(element) {
-		obj_path = "";
-		el_parent = element;
-		while (el_parent.nodeName != "BODY") {
-			if (el_parent.className.search("section") != -1) {
-				elParentCat = $(el_parent).children('.title')[0].innerText;
-				console.log(elParentCat);
-				if (obj_path == "") {
-					obj_path = elParentCat;
-				}
-				else {
-					obj_path = elParentCat + '/' + obj_path;
-				}
+    function addButtonsToEl(element) {
+      obj_path = "";
+      el_parent = element;
+      while (el_parent.nodeName != "BODY") {
+        if (el_parent.className.search("section") != -1) {
+          elParentCat = $(el_parent).children('.title')[0].innerText;
+          // console.log(elParentCat);
+          if (obj_path == "") {
+            obj_path = elParentCat;
+          }
+          else {
+            obj_path = elParentCat + '/' + obj_path;
+          }
 
-			}
-			el_parent = el_parent.parentElement;
-		}
-
-		$(element).append(`<div class='item addCat'><a type='button' onclick="createNewFolderMenu('` + obj_path + `')"><img class="folder-icon" src="{% static 'icons/new_folder.svg' %}"></a><p class='p-tab'>/</p><a type='button' onclick="createNewItemMenu('` + obj_path + `')"><img src="{% static 'icons/add_equipment.svg' %}"></a></div>`);
-		// console.log($(element).children('.item').data('value'));
-	}
-}
+        }
+        el_parent = el_parent.parentElement;
+      }
+      $(element.firstChild).after(`<div class='item addCat'><a type='button' onclick="createNewFolderMenu('` + obj_path + `')"><img class="folder-icon" src="{% static 'icons/new_folder.svg' %}"></a><p class='p-tab'>/</p><a type='button' onclick="createNewItemMenu('` + obj_path + `')"><img class="add-item-btn" src="{% static 'icons/add_equipment.svg' %}"></a></div>`);
+    }
+  }
+  function updatePrices() {
+    $(".item").toArray().forEach(countPrice);
+    function countPrice(line) {
+      if (line.className == "item") {
+        eqId = line.getAttribute("data-value");
+        var price = prices[eqId][0];
+        var amount = prices[eqId][1];
+        line.id = eqId + "line";
+        sName = line.querySelector('.section-name');        
+        $('#' + line.id).append(`<span id="del_` + eqId + `" class='price-col'><a type="button" onclick=deleteEquipment('` + eqId + `')><img class="delete-icon" src="{% static 'icons/delete_item.svg' %}"></a></span>`);
+        $('#' + line.id).append("<span class='price-col'>" + amount + "шт.</span>");
+        $('#' + line.id).append("<span class='price-col'>" + price + "₴\t</span>");
+      }
+    }
+  }
 </script>
 <div>
 
@@ -43,21 +56,21 @@
         // {% endfor %}
         <option readonly value="eq_34235" data-section="Водное" data-description="Folder">Folder</option>
         <option readonly value="eq_34236" data-section="Вело" data-description="Folder">Folder</option>
-        <option readonly value="eq_34237" data-section="Другое" data-description="Folder">Folder</option>
+        <option readonly value="eq_34237" data-section="Пешее" data-description="Folder">Folder</option>
+        <option readonly value="eq_34238" data-section="Другое" data-description="Folder">Folder</option>
       </select>
       <script>
         var prices = {
           "eq_34235": [0,0],
           "eq_34236": [0,0],
           "eq_34237": [0,0],
+          "eq_34238": [0,0],
           //{% for equipment in eq_list %}
           "eq_{{equipment.0}}": ["{{equipment.4}}", "{{equipment.6}}"],
           //{% endfor %}
         };
       </script>
-      <div class="col">
-        <h4 id="priceField">Итоговая цена: 0₴</h4>
-      </div>
+
     </div>
 
     

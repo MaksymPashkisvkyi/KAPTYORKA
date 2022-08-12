@@ -1,4 +1,4 @@
-let trees = $("select#demo2").treeMultiselect({ searchable: true, searchParams: ['section', 'text'], onChange: treeOnChange, freeze: true, startCollapsed: true });
+let trees = $("select#demo2").treeMultiselect({ searchable: true, searchParams: ['section', 'text'], onChange: treeOnChange, freeze: true });
 let tree = trees[0];
 var totalPrice = 0;
 var newItemsNumber = 0;
@@ -21,21 +21,7 @@ function reloadTree() {
 
 
 
-function updatePrices() {
-	$(".item").toArray().forEach(countPrice);
-	function countPrice(line) {
-		if (line.className == "item") {
-			eqId = line.getAttribute("data-value");
-			var price = prices[eqId][0];
-			var amount = prices[eqId][1];
-			line.id = eqId + "line";
-			sName = line.querySelector('.section-name');
-			$('#' + line.id).append("<span class='price-col'>" + amount + "шт.</span>");
-			$('#' + line.id).append("<span class='price-col'>" + price + "₴\t</span>");
-		}
-	}
 
-}
 
 
 function treeOnChange(allSelectedItems, addedItems, removedItems) {
@@ -132,6 +118,7 @@ function createNewFolderMenu(path) {
 
 class Equipment {
 	constructor(name = "", path = "") {
+		this.id = 0
 		this.name = name;
 		this.path = path;
 		this.desc = "";
@@ -144,19 +131,20 @@ class Equipment {
 
 function addNewEquipment() {
 	id = "new_eq_"+newItemsNumber;
-	newItemsNumber++;
+	
 
 	eq_name = document.getElementById("newItemName").value;
 	eq_path = document.getElementById("newItemPath").value;
 	let newEquipment = new Equipment(eq_name, eq_path);
+	newEquipment.id = newItemsNumber
 	newEquipment.desc = document.getElementById("newItemDesc").value;
 	newEquipment.amount = document.getElementById("newItemNumber").value;
 	newEquipment.price = document.getElementById("newItemPrice").value;
-	console.log(newEquipment);
-	$("select#demo2").append("<option readonly value='"+id+"' data-section='"+newEquipment.path+"' selected='selected' data-description='"+newEquipment.desc+"'>"+newEquipment.name+"</option>");
+	// console.log(newEquipment);
 	
-	prices[id] = [newEquipment.price, newEquipment.amount];
-	send_new_equipment('add', 'equipment', newEquipment)
+	
+	send_new_equipment('add', 'equipment', newEquipment);
+	newItemsNumber++;
 	reloadTree();
 }
 
@@ -165,22 +153,32 @@ function addNewFolder() {
 	id = "new_fd_"+newFoldersNumber;
 	newFoldersNumber++;
 
-	eq_name = document.getElementById("newFolderName").value;
+	eq_name = document.getElementById("newFolderName").value.replaceAll(' ', ' ­');
 	eq_path = document.getElementById("newFolderPath").value;
 	let newFolder = new Equipment(eq_name, eq_path);
 	newFolder.desc = "Folder";
 	newFolder.amount = 0;
 	newFolder.price = 0;
-	console.log(newFolder);
+	// console.log(newFolder);
 	$("select#demo2").append("<option readonly style='display:none' value='"+id+"' data-section='"+newFolder.path+'/'+newFolder.name+"' selected='selected' data-description='"+newFolder.desc+"'>"+newFolder.name+"</option>");
 	
 	prices[id] = [0, 0];
+	reloadTree();
 	// send_new_equipment('add', 'equipment', newEquipment)
+	
+}
+
+
+function deleteEquipment(id) {
+	$("select#demo2 option[value='"+id+"']")[0].remove();
+	let newEquipment = new Equipment("", "");
+	newEquipment.id = id.replaceAll("eq_", "");
+	send_new_equipment('remove', 'equipment', newEquipment);
 	reloadTree();
 }
 
 
-function send_new_equipment(requestType, objType, obj) {
+function send_new_equipment(requestType, objType, obj="") {
 	$.ajax({
 		url: "/add_equipment/",
 		type: 'POST',
@@ -218,7 +216,15 @@ function send_new_equipment(requestType, objType, obj) {
 			if (json.result === "success") {
 				// byId(id_code).parentNode.removeChild(byId(id_code));
 				// count_notifications();
-				alert("Ну, чё. Намана");
+				if (requestType == "add") {
+					newId = "eq_"+json.newId
+					// $("select#demo2 option[value='"+'new_eq_'+obj.id+"']")[0].value = newId;
+					$("select#demo2").append("<option readonly value='"+newId+"' data-section='"+obj.path+"' selected='selected' data-description='"+obj.desc+"'>"+obj.name+"</option>");
+
+					prices[ "eq_"+json.newId] = [obj.price, obj.amount];
+				}
+				// alert("Ну, чё. Намана");
+				reloadTree();
 			} else {
 				alert("Изменения не сохранены");
 				alert("Ошибка сегментации диска. Компьютер будет перезагружен.");
