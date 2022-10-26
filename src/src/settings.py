@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'KaptyorkaApp',
+
+    'kapterka.apps.KapterkaConfig',
+
     'django_bootstrap5'
 ]
 
@@ -127,5 +129,5 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'KaptyorkaApp', 'user_files')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'kapterka', 'user_files')
 MEDIA_URL = '/media/'
